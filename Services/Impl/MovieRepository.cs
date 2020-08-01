@@ -69,12 +69,12 @@ namespace CinemaTicketing.Services.Impl
 		public async Task<PagedListBase<Movie>> GetMoviesAsync(PagedParametersBase pagedParameters)
 		{
 			IQueryable<Movie> queryExpression = _DbContext.Movies.AsQueryable<Movie>();
-			PagedListBase<Movie> pagedListBases = await PagedListBase<Movie>.CreateAsync(
+			PagedListBase<Movie> pagedMovies = await PagedListBase<Movie>.CreateAsync(
 				queryExpression,
 				pagedParameters.PageNumber,
 				pagedParameters.PageSize
 				);
-			return pagedListBases;
+			return pagedMovies;
 		}
 
 		public void UpdateMovie(Movie movie)

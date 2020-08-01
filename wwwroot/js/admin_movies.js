@@ -1,35 +1,33 @@
-var nextPageUrl;
-var previousPageUrl;
-var thisPageUrl;
+var movieNextPageUrl;
+var moviePreviousUrl;
+var movieThisPageUrl;
 
 function getMovieList(url) {
 	// console.clear();
 	$.ajax({
 		beforeSend: function(request) {
-			request.setRequestHeader("Accept", "application/vnd.company.hateoas+json");
+			request.setRequestHeader("Accept", "application/vnd.cinemaTicketing.hateoas+json");
 			request.setRequestHeader("Content-type", "application/json");
 		},
 		type: "get", //设置请求类型
 		url: url, //请求后台的url地址
 		// data: "", //请求参数，是key-value形式的，如 {name:"jason"}
 		success: function(result) { //请求成功后的回调函数，data为后台返回的值
-			console.log(result);
-
 			showMovies(result);
 			getLinksForPages(result);
-			showPageInfo(result);
+			showMoviePageInfo(result);
 		}
 	});
 }
-
-function showPageInfo(result) {
+//显示翻页信息
+function showMoviePageInfo(result) {
 	var currentPage = result["currentPage"];
 	var totalCount = result["totalCount"];
 	var totalPages = result["totalPages"];
-	document.getElementById("pageInfo").innerHTML = "当前页数:" + currentPage + "/总页数:" + totalPages + " 共" + totalCount +
+	document.getElementById("moviePageInfo").innerHTML = "当前页数:" + currentPage + "/总页数:" + totalPages + " 共" + totalCount +
 		"条数据";
 }
-
+//显示电影信息
 function showMovies(result) {
 	movies = result["linkedMovieDto"];
 	var str = "<tr style='height: 50px; '><th style='width: 155px;'>电影名</th>"
@@ -90,7 +88,7 @@ function deleteMovie(deleteLink) {
 		type: "delete", //设置请求类型
 		url: deleteLink, //请求后台的url地址
 		success: function(result) { //请求成功后的回调函数
-			getMovieList(thisPageUrl);
+			getMovieList(movieThisPageUrl);
 		}
 	});
 }
@@ -106,27 +104,27 @@ function getLinksForPages(result) {
 		// console.log("link = " + JSON.stringify(link));
 		if (link["rel"] == "next_page") {
 			document.getElementById("Next").disabled = false;
-			nextPageUrl = link["href"];
+			movieNextPageUrl = link["href"];
 			// console.log("nextUrl = " + nextPageUrl);
 		}
 		if (link["rel"] == "previous_page") {
 			document.getElementById("Previous").disabled = false;
-			previousPageUrl = link["href"];
+			moviePreviousUrl = link["href"];
 			// console.log("previousUrl = " + previousPageUrl);
 		}
 		if (link["rel"] == "self") {
-			thisPageUrl = link["href"];
+			movieThisPageUrl = link["href"];
 			// console.log("nextUrl = " + nextPageUrl);
 		}
 	}
 }
 //跳转到下一页
 function movieNextPage() {
-	getMovieList(nextPageUrl);
+	getMovieList(movieNextPageUrl);
 }
 //跳转到上一页
 function moviePreviousPage() {
-	getMovieList(previousPageUrl);
+	getMovieList(moviePreviousUrl);
 }
 //跳转到添加Movie
 function jumpToAddMovie() {

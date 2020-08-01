@@ -48,7 +48,7 @@ namespace CinemaTicketing
 				NewtonsoftJsonOutputFormatter newtonsoftJsonOutputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
 				if (newtonsoftJsonOutputFormatter != null)
 				{
-					newtonsoftJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.company.hateoas+json");
+					newtonsoftJsonOutputFormatter.SupportedMediaTypes.Add("application/vnd.cinemaTicketing.hateoas+json");
 				}
 			});
 			services

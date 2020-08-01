@@ -1,4 +1,5 @@
-﻿using CinemaTicketing.Models;
+﻿using CinemaTicketing.Helpers.Pagination;
+using CinemaTicketing.Models;
 using CinemaTicketing.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -41,11 +42,29 @@ namespace CinemaTicketing.Services.Impl
 		/// </summary>
 		/// <param name="hallId"></param>
 		/// <returns></returns>
-		public async Task<Hall> GetHall(int hallId)
+		public async Task<Hall> GetHallAsync(int hallId)
 		{
 			return await _DbContext.Halls
 				.Where(x => x.Id == hallId)
 				.FirstOrDefaultAsync();
+		}
+		public void DeleteHall(Hall hall)
+		{
+			_DbContext.Halls.Remove(hall);
+		}
+		/// <summary>
+		/// 获取所有影厅
+		/// </summary>
+		/// <returns></returns>
+		public async Task<PagedListBase<Hall>> GetHallsAsync(PagedParametersBase pagedParameters)
+		{
+			IQueryable<Hall> halls = _DbContext.Halls.AsQueryable<Hall>();
+			PagedListBase<Hall> pagedHalls = await PagedListBase<Hall>.CreateAsync(
+				halls,
+				pagedParameters.PageNumber,
+				pagedParameters.PageSize
+				);
+			return pagedHalls;
 		}
 		public async Task<bool> SaveAsync()
 		{

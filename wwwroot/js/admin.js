@@ -3,7 +3,8 @@ var guid;
 window.onload = function() {
 	getParams();
 	getUserInfo();
-	getMovieList("/api/movies/?pageSize=5&pageNumber=1");
+	getMovieList("/api/movies/");
+	getHallList("/api/halls");
 }
 
 function getParams() {

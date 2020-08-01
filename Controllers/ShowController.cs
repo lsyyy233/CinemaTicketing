@@ -77,7 +77,7 @@ namespace CinemaTicketing.Controllers
 			}
 			//添加场次，并返回结果
 			Movie movie = await movieRepository.GetMovieAsync(showAddDto.MovieId);
-			Hall hall = await hallRepository.GetHall(showAddDto.HallId);
+			Hall hall = await hallRepository.GetHallAsync(showAddDto.HallId);
 			show.Movie = movie;
 			show.Hall = hall;
 			showRepository.AddShow(show);

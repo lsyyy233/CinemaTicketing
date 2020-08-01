@@ -6,12 +6,10 @@ using CinemaTicketing.Models.Dtos.AddDtos;
 using CinemaTicketing.Models.Dtos.UpdateDtos;
 using CinemaTicketing.Models.Entity;
 using CinemaTicketing.Services;
-using CinemaTicketing.Services.Impl;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace CinemaTicketing.Controllers
@@ -38,7 +36,9 @@ namespace CinemaTicketing.Controllers
 		/// </summary>
 		/// <returns></returns>
 		[HttpGet(Name = nameof(GetMovies))]
-		public async Task<ActionResult> GetMovies([FromQuery] PagedParametersBase pagedParameters, [FromHeader(Name = "Accept")] string mediaType)
+		public async Task<ActionResult> GetMovies(
+			[FromQuery] PagedParametersBase pagedParameters, 
+			[FromHeader(Name = "Accept")] string mediaType)
 		{
 			//
 			if (!MediaTypeHeaderValue.TryParse(mediaType, out MediaTypeHeaderValue parsedMediaType))
@@ -48,7 +48,7 @@ namespace CinemaTicketing.Controllers
 			//对数据进行分页
 			PagedListBase<Movie> pagedMovies = await movieRepository.GetMoviesAsync(pagedParameters);
 			//转换为MovieDto
-			List<MovieDto> movieDtos = new List<MovieDto>();
+			List<MovieDto> pagedMovieDtos = new List<MovieDto>();
 			//设置MovieDto中的ReleaseStatu属性
 			foreach (Movie movie in pagedMovies)
 			{
@@ -65,24 +65,24 @@ namespace CinemaTicketing.Controllers
 				{
 					movieDto.ReleaseStatu = ReleaseStatu.暂无场次;
 				}
-				movieDtos.Add(movieDto);
+				pagedMovieDtos.Add(movieDto);
 			}
 			//添加hateoas信息
-			if (parsedMediaType.MediaType == "application/vnd.company.hateoas+json")
+			if (parsedMediaType.MediaType == "application/vnd.cinemaTicketing.hateoas+json")
 			{
 				List<dynamic> linkedMovieDto = new List<dynamic>();
 				//遍历集合，为每一个元素添加hateoas信息
-				foreach (MovieDto data in movieDtos)
+				foreach (MovieDto data in pagedMovieDtos)
 				{
 					IEnumerable<LinkDto> links = CreateLinksForMovie(data.Id);
 					linkedMovieDto.Add(new { data, links });
 				}
 				//添加翻页信息
 				IEnumerable<LinkDto> linksForMovies = CreateLinksForMovies(pagedParameters, pagedMovies.HasPrevious, pagedMovies.HasNext);
-				var result = new { linkedMovieDto, linksForMovies , pagedMovies.TotalCount, pagedMovies.CurrentPage, pagedMovies.TotalPages };
+				var result = new { linkedMovieDto, linksForMovies, pagedMovies.TotalCount, pagedMovies.CurrentPage, pagedMovies.TotalPages };
 				return Ok(result);
 			}
-			return Ok(movieDtos);
+			return Ok(pagedMovieDtos);
 		}
 		/// <summary>
 		/// 根据Id获取电影信息
@@ -92,7 +92,7 @@ namespace CinemaTicketing.Controllers
 		[HttpGet("{movieId}", Name = nameof(GetMovie))]
 		public async Task<IActionResult> GetMovie(int movieId)
 		{
-			
+
 			Movie movie = await movieRepository.GetMovieAsync(movieId);
 			if (movie == null)
 			{
@@ -147,14 +147,19 @@ namespace CinemaTicketing.Controllers
 			MovieDto result = mapper.Map<MovieDto>(movie);
 			return CreatedAtRoute(nameof(GetMovie), new { movieId = movie.Id }, result);
 		}
+		/// <summary>
+		/// 为单个movie添加链接
+		/// </summary>
+		/// <param name="movieId"></param>
+		/// <returns></returns>
 		private IEnumerable<LinkDto> CreateLinksForMovie(int movieId)
 		{
 			List<LinkDto> links = new List<LinkDto>
 			{
-				new LinkDto(
-					Url.Link(nameof(GetMovie), new { movieId }),
-					"self",
-					"Get"),
+				//new LinkDto(
+				//	Url.Link(nameof(GetMovie), new { movieId }),
+				//	"self",
+				//	"Get"),
 				new LinkDto(
 					Url.Link(nameof(DeleteMovie), new { movieId }),
 					"delete movie",
@@ -173,19 +178,19 @@ namespace CinemaTicketing.Controllers
 		{
 			List<LinkDto> links = new List<LinkDto>
 			{
-				new LinkDto(CreateCompaniesResourceUri(parameters, ResourceUriType.CurrentPage),
+				new LinkDto(CreateMoviesResourceUri(parameters, ResourceUriType.CurrentPage),
 				"self",
 				"Get")
 			};
 			if (hasPrevious)
 			{
-				links.Add(new LinkDto(CreateCompaniesResourceUri(parameters, ResourceUriType.PreviousPage),
+				links.Add(new LinkDto(CreateMoviesResourceUri(parameters, ResourceUriType.PreviousPage),
 					"previous_page",
 					"Get"));
 			}
 			if (hasNext)
 			{
-				links.Add(new LinkDto(CreateCompaniesResourceUri(parameters, ResourceUriType.NextPage),
+				links.Add(new LinkDto(CreateMoviesResourceUri(parameters, ResourceUriType.NextPage),
 					"next_page",
 					"Get"));
 			}
@@ -197,7 +202,7 @@ namespace CinemaTicketing.Controllers
 		/// <param name="parameters"></param>
 		/// <param name="resourceUriType"></param>
 		/// <returns></returns>
-		private string CreateCompaniesResourceUri(PagedParametersBase parameters, ResourceUriType resourceUriType)
+		private string CreateMoviesResourceUri(PagedParametersBase parameters, ResourceUriType resourceUriType)
 		{
 			int pageNumber = 0;
 			switch (resourceUriType)
@@ -232,8 +237,8 @@ namespace CinemaTicketing.Controllers
 		/// <returns></returns>
 		[HttpPut]
 		public async Task<ActionResult> UpdateMovie(
-			[FromHeader(Name ="guid")]Guid guid,
-			[FromBody]MovieUpdateDto movieUpdateDto)
+			[FromHeader(Name = "guid")] Guid guid,
+			[FromBody] MovieUpdateDto movieUpdateDto)
 		{
 			if (guid == Guid.Empty)
 			{

@@ -140,6 +140,12 @@ namespace CinemaTicketing.Models
 					Id = 1,
 					Seats = 56,
 					Name = "一号厅"
+				},
+				new Hall 
+				{
+					Id = 2,
+					Seats = 60,
+					Name = "二号厅"
 				});
 			modelBuilder.Entity<Show>()
 				.HasData(
