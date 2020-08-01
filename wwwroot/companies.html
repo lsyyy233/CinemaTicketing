@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Companies</title>
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.css">
+		<script type="application/javascript" src="./lib/jquery/dist/jquery.js"></script>
+		<script type="application/javascript" src="./js/jquery.params.js"></script>
+		<script type="text/javascript">
+			var nextUrl;
+			var previousUrl;
+			window.onload = function() {
+				sendAjax("api/companies");
+			}
+
+			function sendAjax(href) {
+				// var result = "";
+				// alert(href);
+				$.ajax({
+					beforeSend: function(request) {
+					            request.setRequestHeader("Accept","application/vnd.company.hateoas+json");
+					         },
+					// async:false,
+					type: "get", //设置请求类型
+					url: href, //请求后台的url地址
+					data: "", //请求参数，是key-value形式的，如 {name:"jason"}m
+					success: function(data) { //请求成功后的回调函数，data为后台返回的值
+						console.clear();
+						console.log(data);
+						var companies = data["value"];
+						showCompanies(companies);
+						var links = data["links"];
+						getLinks(links);
+						// result = data;
+					}
+				});
+			}
+
+			function getLinks(links) {
+				document.getElementById("Next").disabled = true;
+				document.getElementById("Previous").disabled = true;
+				// console.log(links);
+				for (var i = 0; i < links.length; i++) {
+					link = links[i];
+
+					console.log("link = " + JSON.stringify(link));
+					if (link["rel"] == "next_page") {
+						document.getElementById("Next").disabled = false;
+						nextUrl = link["href"];
+						console.log("nextUrl = " + nextUrl);
+					}
+					if (link["rel"] == "previous_page") {
+						document.getElementById("Previous").disabled = false;
+						previousUrl = link["href"];
+						console.log("previousUrl = " + previousUrl);
+					}
+				}
+			}
+
+			function showCompanies(companies) {
+				// console.log(companies);
+				var str = "";
+				str = "<tr><th>Id</th><th>Name</th><th>Introduction</th><th>Employees</th></tr>";
+				for (var i = 0; i < companies.length; i++) {
+					// console.log(companies[i]);
+					str += "<tr>";
+					str += "<td>" + companies[i]["id"] + "</td>";
+					str += "<td>" + companies[i]["companyName"] + "</td>";
+					str += "<td>" + companies[i]["introduction"] + "</td>";
+					str += "<td><a href=\"/employees.html?companyId=" + companies[i]["id"] + "\">Employees</a></td>";
+					str += "</tr>";
+				}
+				document.getElementById("table").innerHTML = str;
+			}
+
+			function add() {
+				window.location.href = "/addCompany.html";
+			}
+
+			function nextPage() {
+				// alert(nextUrl);
+				sendAjax(nextUrl);
+			}
+
+			function previousPage() {
+				sendAjax(previousUrl);
+			}
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<div class=" row">
+				<div class="col-md-2">
+					<img alt="Logo" src="./images/1.png" style="height:60px;width:60px">
+				</div>
+				<div class="col-md-10">
+					<span class=" h2">Companies</span>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-10 offset-md-2">
+					<table class="table" id="table">
+						<tr>
+							<th>Id</th>
+							<th>Name</th>
+							<th>Introduction</th>
+							<th>Employees</th>
+						</tr>
+
+					</table>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-md-4 offset-md-2">
+					<button class="btn btn-primary" onclick=javascript:previousPage() style="width: 100px;" id="Previous" disabled="disabled">上一页</button>
+					<button class="btn btn-primary" onclick=javascript:nextPage() style="width: 100px;" id="Next" disabled="disabled">下一页</button>
+					<br>
+					<button class="btn btn-primary" onclick=javascript:add() style="width: 70px;">Add</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

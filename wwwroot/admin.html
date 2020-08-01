@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>管理员</title>
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.css">
+		<script type="text/javascript" src="./lib/jquery/dist/jquery.js"></script>
+		<script type="text/javascript" src="./js/jquery.params.js"></script>
+		<script type="text/javascript" src="js/admin.js"></script>
+		<script type="text/javascript" src="js/admin_movies.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class=" row">
+				<div class="col-md-1">
+					<img alt="Logo" src="./images/1.png" style="height:60px;width:60px">
+				</div>
+				<div class="col-md-8">
+					<span class=" h2" id="currentUser">当前用户：</span>
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-md-20 offset-md-1">
+					<span class=" h3">影库</span>
+					<table class="table" id="movieTable"  style="text-align: center;" border="1">
+						
+					</table>
+					<button class="btn btn-primary" onclick=javascript:moviePreviousPage() style="width: 100px;" id="Previous" disabled="disabled">上一页</button>
+					<span id = "pageInfo"></span>
+					<button class="btn btn-primary" onclick=javascript:movieNextPage() style="width: 100px;" id="Next" disabled="disabled">下一页</button>
+					<button class="btn btn-primary" onclick=javascript:jumpToAddMovie() style="width: 70px; float: right;">添加</button>
+				</div>
+				<div class="col-md-20 offset-md-1">
+					<span class=" h3">影厅</span>
+					<table class="table" id="hallTable"  style="text-align: center;" border="1">
+						
+					</table>
+					<button class="btn btn-primary" onclick=javascript:previousPage() style="width: 100px;" id="Previous" disabled="disabled">上一页</button>
+					<span id = "pageInfo"></span>
+					<button class="btn btn-primary" onclick=javascript:nextPage() style="width: 100px;" id="Next" disabled="disabled">下一页</button>
+					<button class="btn btn-primary" onclick=javascript:jumpToAddMovie() style="width: 70px; float: right;">添加</button>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

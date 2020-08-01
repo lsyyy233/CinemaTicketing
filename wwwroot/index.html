@@ -1,0 +1,44 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<meta charset="utf-8">
+		<title>login</title>
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<script type="application/javascript" src="./lib/jquery/dist/jquery.min.js"></script>
+		<script type="application/javascript" src="./js/jquery.params.js"></script>
+		<link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.min.css"/>
+		<link rel="stylesheet" type="text/css" href="./css/login.css">
+		<script type="application/javascript" src="js/login.js"></script>
+	</head>
+	<body>
+		<div class="header" id="head">
+			<div class="title">售票系统</div>
+
+		</div>
+
+		<div class="wrap" id="wrap">
+			<div class="logGet">
+				<!-- 头部提示信息 -->
+				<div class="logD logDtip">
+					<p class="p1">登录</p>
+				</div>
+				<!-- 输入框 -->
+				<div class="lgD">
+					<img src="./images/user.png" width="20" height="20" alt="" />
+					<input type="text" placeholder="输入用户名" name="userAccount" id="userAccount" value="admin" />
+					<span></span>
+				</div>
+				<div class="lgD">
+					<img src="./images/pwd.png" width="20" height="20" alt="" />
+					<input type="password" placeholder="输入用户密码" name="userPwd" id="userPwd" value="123456"/>
+					<span></span>
+				</div>
+				<div class="logC">
+					<button class="button" onclick=javascrtpt:login()>登录</button>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>添加电影</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.css">
+	<script type="application/javascript" src="./lib/jquery/dist/jquery.js"></script>
+	<script type="application/javascript" src="./js/jquery.params.js"></script>
+	<script type="text/javascript" src="js/addMovie.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class=" row">
+			<div class="col-md-2">
+				<img alt="Logo" src="/images/1.png" style="height:60px;width:60px">
+			</div>
+			<div class="col-md-10">
+				<span class=" h2">添加电影</span>
+			</div>
+		</div>
+		<form id="form">
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="name">电影名</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" type="text" id="name" name="name" value="刺猬索尼克" />
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="introduction">简介</label>
+				</div>
+				<div class="col-md-8">
+					<textarea class="form-control" style="height: 300px;" type="text" id="introduction" name="introduction" value="" />《刺猬索尼克》改编自世嘉公司出品的风靡全球的电子游戏。电影讲述了拥有音速奔跑能力的刺猬索尼克在地球上展开新生活的故事。索尼克将和他的新朋友汤姆（詹姆斯·麦斯登 饰）联手保护地球，阻止邪恶的蛋头博士（金·凯瑞 饰）统治世界的计划。这部适合全家观看的电影还邀请了迪卡·桑普特参演，本·施瓦茨为索尼克配音。</textarea>
+				</div>
+			</div>
+
+		</form>
+		<div>
+			<div class="col-md-2 offset-md-2">
+				<button class="btn btn-primary" onclick=javascript:addMovie() style="width: 70px;">添加</button>
+				<button class="btn btn-primary" onclick=javascrtpt:goBack() style="width: 70px;">返回</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
