@@ -14,7 +14,7 @@ function getMovieList(url) {
 		// data: "", //请求参数，是key-value形式的，如 {name:"jason"}
 		success: function(result) { //请求成功后的回调函数，data为后台返回的值
 			showMovies(result);
-			getLinksForPages(result);
+			getLinksForMoviePage(result);
 			showMoviePageInfo(result);
 		}
 	});
@@ -93,7 +93,7 @@ function deleteMovie(deleteLink) {
 	});
 }
 // 获取翻页链接
-function getLinksForPages(result) {
+function getLinksForMoviePage(result) {
 	var linksForMovies = result["linksForMovies"]
 	document.getElementById("Next").disabled = true;
 	document.getElementById("Previous").disabled = true;
