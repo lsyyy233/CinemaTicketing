@@ -12,7 +12,9 @@ namespace CinemaTicketing.Models.Dtos
 		public DateTime DateTime { get; set; }
 		public string ShowNum { get; set; }
 		public int MovieId { get; set; }
+		public string MovieName { get; set; }
 		public int HallId { get; set; }
+		public string HallName { get; set; }
 		public bool Expired { get; set; }
 		public double Price { get; set; }
 	}

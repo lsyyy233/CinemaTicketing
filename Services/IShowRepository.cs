@@ -1,4 +1,5 @@
-﻿using CinemaTicketing.Models.Entity;
+﻿using CinemaTicketing.Helpers.Pagination;
+using CinemaTicketing.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace CinemaTicketing.Services
 		void AddShow(Show show);
 		void UpdateShow(Show show);
 		void DeleteShow(Show show);
-		Task<List<Show>> GetShowsAsync();
+		Task<PagedListBase<Show>> GetShowsAsync(PagedParametersBase pagedParameters);
 		Task<Show> GetShowAsync(int showId);
 		Task<IEnumerable<Show>> GetShowsOfToday();
 		Task<IEnumerable<Show>> GetShowsOfHallAtOneDay(int hallId, DateTime dateTime, ShowNum? showNum);

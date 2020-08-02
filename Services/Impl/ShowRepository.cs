@@ -1,4 +1,5 @@
-﻿using CinemaTicketing.Models;
+﻿using CinemaTicketing.Helpers.Pagination;
+using CinemaTicketing.Models;
 using CinemaTicketing.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -64,9 +65,15 @@ namespace CinemaTicketing.Services.Impl
 		/// 获取所有场次
 		/// </summary>
 		/// <returns></returns>
-		public async Task<List<Show>> GetShowsAsync()
+		public async Task<PagedListBase<Show>> GetShowsAsync(PagedParametersBase pagedParameters)
 		{
-			return await _DbContext.Shows.ToListAsync();
+			IQueryable<Show> queryExpression =  _DbContext.Shows.AsQueryable<Show>();
+			PagedListBase<Show> pagedShows = await PagedListBase<Show>.CreateAsync(
+				queryExpression,
+				pagedParameters.PageNumber,
+				pagedParameters.PageSize
+				);
+			return pagedShows;
 		}
 		/// <summary>
 		/// 获取当天的所有场次
