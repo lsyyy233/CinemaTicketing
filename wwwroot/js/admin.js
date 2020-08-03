@@ -5,6 +5,7 @@ window.onload = function() {
 	getUserInfo();
 	getMovieList("/api/movies/");
 	getHallList("/api/halls");
+	getShowList("/api/shows");
 }
 
 function getParams() {

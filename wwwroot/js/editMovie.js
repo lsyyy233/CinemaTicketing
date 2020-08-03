@@ -8,6 +8,10 @@ window.onload = function() {
 }
 
 function getMovieInfo() {
+	if ((guid == null) || guid == "") {
+		alert("未登录！");
+		return;
+	}
 	$.ajax({
 		type: "get", //设置请求类型
 		url: "/api/movies/" + movieId, //请求后台的url地址

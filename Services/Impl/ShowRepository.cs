@@ -17,7 +17,27 @@ namespace CinemaTicketing.Services.Impl
 		{
 			_DbContext = cinemaTicketingDbContext;
 		}
-
+		/// <summary>
+		/// 获取指定日期和影厅的有空闲的场次
+		/// </summary>
+		/// <param name="date"></param>
+		/// <param name="hall"></param>
+		/// <returns></returns>
+		public async Task<List<string>> GetAvailableShowsAsync(DateTime date,int hallId)
+		{
+			string[] showNums = Enum.GetNames(typeof(ShowNum));
+			List<string> availableShows = new List<string>();
+			availableShows.AddRange(showNums);
+			List<ShowNum> lists = await _DbContext.Shows
+				.Where(x => x.DateTime == date && x.HallId == hallId)
+				.Select(x => x.ShowNum)
+				.ToListAsync();
+			foreach(ShowNum showNum in lists)
+			{
+				availableShows.Remove(showNum.ToString());
+			}
+			return availableShows;
+		}
 		/// <summary>
 		/// 添加场次
 		/// </summary>

@@ -19,5 +19,6 @@ namespace CinemaTicketing.Services
 		Task<PagedListBase<Hall>> GetHallsAsync(PagedParametersBase pagedParameters);
 		void DeleteHall(Hall hall);
 		void UpdateHall(Hall hall);
+		Task<List<Hall>> GetHallOfDateAsync(DateTime date);
 	}
 }

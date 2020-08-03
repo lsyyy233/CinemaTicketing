@@ -3,6 +3,7 @@ using CinemaTicketing.Models;
 using CinemaTicketing.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -15,7 +16,28 @@ namespace CinemaTicketing.Services.Impl
 		{
 			_DbContext = cinemaTicketingDbContext;
 		}
-
+		/// <summary>
+		/// 获取指定日期没有排满场次的影厅
+		/// </summary>
+		/// <param name="date"></param>
+		/// <returns></returns>
+		public async Task<List<Hall>> GetHallOfDateAsync(DateTime date)
+		{
+			List<Hall> result = new List<Hall>();
+			List<Hall> halls = await _DbContext.Halls.ToListAsync();
+			foreach (Hall hall in halls)
+			{
+				int count =
+					_DbContext.Shows
+					.Where(x => x.HallId == hall.Id && x.DateTime == date)
+					.Count();
+				if (count < 6)
+				{
+					result.Add(hall);
+				}
+			}
+			return result;
+		}
 		/// <summary>
 		/// 添加影厅
 		/// </summary>

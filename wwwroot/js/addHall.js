@@ -24,8 +24,6 @@ function getForm() {
 
 function goBack() {
 	window.location.href = "../admin.html?" + "guid=" + guid;
-	 // +
-		// "&hallPageNum=" + pageNum + "&hallPageSize=" + pageSize;
 }
 
 function sendRequest(hallToAdd) {

@@ -1,19 +1,8 @@
 var hallSelfPageUrl;
 var hallNextPageUrl;
 var hallPreviousPageUrl;
-var hallPageNum;
-var hallPageSize
 
-function getHallList() {
-	if (arguments.length == 1) {
-		getHallListNormal(arguments[0]);
-	}
-	if (arguments.length == 3) {
-		getHallListNormal(arguments[0], arguments[1], arguments[2]);
-	}
-}
-
-function getHallListNormal(url) {
+function getHallList(url) {
 	$.ajax({
 		beforeSend: function(request) {
 			request.setRequestHeader("Accept", "application/vnd.cinemaTicketing.hateoas+json");
@@ -23,25 +12,7 @@ function getHallListNormal(url) {
 		url: url, //请求后台的url地址
 		// data: "", //请求参数，是key-value形式的，如 {name:"jason"}
 		success: function(result) { //请求成功后的回调函数，data为后台返回的值
-			console.log(result);
-			showHalls(result);
-			showHallPageInfo(result);
-			getLinksForHallPage(result);
-		}
-	});
-}
-
-function getHallListByPage(url, pageNumber, pageSize) {
-	$.ajax({
-		beforeSend: function(request) {
-			request.setRequestHeader("Accept", "application/vnd.cinemaTicketing.hateoas+json");
-			request.setRequestHeader("Content-type", "application/json");
-		},
-		type: "get", //设置请求类型
-		url: url + "?pageNum=" + pageNumber + "&pageSize=" + pageSize, //请求后台的url地址
-		// data: "", //请求参数，是key-value形式的，如 {name:"jason"}
-		success: function(result) { //请求成功后的回调函数，data为后台返回的值
-			console.log(result);
+			// console.log(result);
 			showHalls(result);
 			showHallPageInfo(result);
 			getLinksForHallPage(result);
@@ -55,15 +26,13 @@ function showHallPageInfo(result) {
 	var totalPages = result["totalPages"];
 	document.getElementById("hallPageInfo").innerHTML = "当前页数:" + currentPage + "/总页数:" + totalPages + " 共" + totalCount +
 		"条数据";
-	hallPageNum = currentPage;
-	hallPageSize = result["pageSize"];
 }
 
 function showHalls(result) {
 	var str = " <tr style='height: 50px;'>" +
-		"<th style='width: 150px;'>名称</th>" +
-		"<th style='width: 100px;'>座位数</th>" +
-		"<th colspan='2'' style='width: 120px;'>操作</th>" +
+		"<th>名称</th>" +
+		"<th>座位数</th>" +
+		"<th colspan='2'>操作</th>" +
 		"</tr>";
 	var halls = result["linkedHallDtos"];
 	for (var i = 0; i < halls.length; i++) {
@@ -94,6 +63,10 @@ function editHall(hallId) {
 }
 //删除hall
 function deleteHall(deleteLink) {
+	if ((guid == null) || guid == "") {
+		alert("未登录！");
+		return;
+	}
 	$.ajax({
 		beforeSend: function(request) {
 			request.setRequestHeader("guid", guid);
@@ -108,7 +81,7 @@ function deleteHall(deleteLink) {
 }
 
 function jumpToAddHall() {
-	window.location.href = "/addHall.html" + "?guid=" + guid + "&pageNum=" + hallPageNum + "&pageSize=" + hallPageSize;
+	window.location.href = "/addHall.html" + "?guid=" + guid;
 }
 
 function hallPreviousPage() {

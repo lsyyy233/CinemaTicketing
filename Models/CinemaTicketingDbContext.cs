@@ -73,9 +73,9 @@ namespace CinemaTicketing.Models
 				.HasKey(x => x.UserId);
 			#endregion
 			#region 唯一约束
-			//场次 日期和场次的联合唯一约束
+			//场次 日期、影厅和第*场的联合唯一约束
 			modelBuilder.Entity<Show>()
-				.HasAlternateKey(x => new { x.ShowNum, x.DateTime });
+				.HasAlternateKey(x => new { x.ShowNum,x.HallId, x.DateTime });
 			//电影票 场次和座位号唯一约束
 			modelBuilder.Entity<Ticket>()
 				.HasAlternateKey(x => new { x.ShowId, x.SeatNum });
@@ -155,6 +155,114 @@ namespace CinemaTicketing.Models
 					DateTime = DateTime.Parse("2020-08-10T00:00:00"),
 					ShowNum = ShowNum.第一场,
 					MovieId = 1,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 2,
+					DateTime = DateTime.Parse("2020-08-10T00:00:00"),
+					ShowNum = ShowNum.第二场,
+					MovieId = 2,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 3,
+					DateTime = DateTime.Parse("2020-08-10T00:00:00"),
+					ShowNum = ShowNum.第三场,
+					MovieId = 3,
+					HallId = 2,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 4,
+					DateTime = DateTime.Parse("2020-08-11T00:00:00"),
+					ShowNum = ShowNum.第一场,
+					MovieId = 3,
+					HallId = 2,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 5,
+					DateTime = DateTime.Parse("2020-08-12T00:00:00"),
+					ShowNum = ShowNum.第三场,
+					MovieId = 3,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 6,
+					DateTime = DateTime.Parse("2020-08-12T00:00:00"),
+					ShowNum = ShowNum.第一场,
+					MovieId = 2,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 7,
+					DateTime = DateTime.Parse("2020-08-12T00:00:00"),
+					ShowNum = ShowNum.第二场,
+					MovieId = 5,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 8,
+					DateTime = DateTime.Parse("2020-08-13T00:00:00"),
+					ShowNum = ShowNum.第一场,
+					MovieId = 5,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 9,
+					DateTime = DateTime.Parse("2020-08-13T00:00:00"),
+					ShowNum = ShowNum.第二场,
+					MovieId = 5,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 10,
+					DateTime = DateTime.Parse("2020-08-13T00:00:00"),
+					ShowNum = ShowNum.第三场,
+					MovieId = 5,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 11,
+					DateTime = DateTime.Parse("2020-08-13T00:00:00"),
+					ShowNum = ShowNum.第四场,
+					MovieId = 5,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 12,
+					DateTime = DateTime.Parse("2020-08-13T00:00:00"),
+					ShowNum = ShowNum.第五场,
+					MovieId = 5,
+					HallId = 1,
+					Price = 123.4
+				},
+				new Show
+				{
+					Id = 13,
+					DateTime = DateTime.Parse("2020-08-13T00:00:00"),
+					ShowNum = ShowNum.第六场,
+					MovieId = 5,
 					HallId = 1,
 					Price = 123.4
 				});

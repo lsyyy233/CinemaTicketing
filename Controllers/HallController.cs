@@ -30,6 +30,19 @@ namespace CinemaTicketing.Controllers
 			this.hallRepository = hallRepository;
 			this.authentication = authentication;
 		}
+		
+		/// <summary>
+		/// 获取在指定日期没有排满场次的影厅
+		/// </summary>
+		/// <param name = "date" ></ param >
+		/// < returns ></ returns >
+		[HttpGet("date/{date}", Name = nameof(GetHallOfDateAsync))]
+		public async Task<ActionResult> GetHallOfDateAsync(DateTime date)
+		{
+			List<Hall> halls = await hallRepository.GetHallOfDateAsync(date);
+			List<HallDto> hallDtos = mapper.Map<List<HallDto>>(halls);
+			return Ok(hallDtos);
+		}
 		/// <summary>
 		/// 更新影厅
 		/// </summary>

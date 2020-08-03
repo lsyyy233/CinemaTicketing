@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CinemaTicketing.Helpers;
 using CinemaTicketing.Helpers.Pagination;
 using CinemaTicketing.Models.Dtos;
 using CinemaTicketing.Models.Dtos.AddDtos;
@@ -6,6 +7,7 @@ using CinemaTicketing.Models.Entity;
 using CinemaTicketing.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,6 +19,7 @@ namespace CinemaTicketing.Controllers
 	public class ShowController : ControllerBase
 	{
 		private readonly IShowRepository showRepository;
+		private readonly IAuthentication authentication;
 		private readonly IMovieRepository movieRepository;
 		private readonly IHallRepository hallRepository;
 		private readonly IMapper mapper;
@@ -24,12 +27,30 @@ namespace CinemaTicketing.Controllers
 			IMapper mapper,
 			IShowRepository repository,
 			IMovieRepository movieRepository,
-			IHallRepository hallRepository)
+			IHallRepository hallRepository, 
+			IAuthentication authentication)
 		{
 			this.mapper = mapper;
 			this.showRepository = repository;
 			this.movieRepository = movieRepository;
 			this.hallRepository = hallRepository;
+			this.authentication = authentication;
+		}
+		/// <summary>
+		/// 获取指定日期和影厅的有空闲的场次
+		/// </summary>
+		/// <param name="hallId"></param>
+		/// <param name="date"></param>
+		/// <returns></returns>
+		[HttpGet("hall/{hallId}/{date}",Name =nameof(GetAvailableShows))]
+		public async Task<ActionResult> GetAvailableShows(int hallId, DateTime date)
+		{
+			if(await hallRepository.GetHallAsync(hallId) == null)
+			{
+				return NotFound();
+			}
+			List<string> result = await showRepository.GetAvailableShowsAsync(date, hallId);
+			return Ok(result);
 		}
 		/// <summary>
 		/// 根据Id获取场次
@@ -92,8 +113,21 @@ namespace CinemaTicketing.Controllers
 		/// <param name="showAddDto"></param>
 		/// <returns></returns>
 		[HttpPost(Name = nameof(AddShow))]
-		public async Task<ActionResult<Show>> AddShow([FromBody]ShowAddDto showAddDto)
+		public async Task<ActionResult<Show>> AddShow(
+			[FromBody]ShowAddDto showAddDto,
+			[FromHeader(Name = "guid")] Guid guid)
 		{
+			//检查用户是否已经登录
+			if (guid == Guid.Empty)
+			{
+				return Unauthorized();
+			}
+			//检查登陆的用户是否为管理员
+			User user = await authentication.GetUserTypeAsync(guid);
+			if (user == null || (user.UserType != UserType.Administrator))
+			{
+				return Unauthorized();
+			}
 			Show show = mapper.Map<Show>(showAddDto);
 			//检查在当天该影厅是否存在同1场次
 			IEnumerable<Show> showsOfHallAtOneDay = await showRepository.GetShowsOfHallAtOneDay(show.HallId, show.DateTime, show.ShowNum);
@@ -113,8 +147,21 @@ namespace CinemaTicketing.Controllers
 			return CreatedAtRoute(nameof(GetShows), new { showId = show.Id }, showDto);
 		}
 		[HttpDelete("{showId}", Name = nameof(DeleteShow))]
-		public async Task<ActionResult> DeleteShow(int showId)
+		public async Task<ActionResult> DeleteShow(
+			int showId,
+			[FromHeader(Name = "guid")] Guid guid)
 		{
+			//检查用户是否已经登录
+			if (guid == Guid.Empty)
+			{
+				return Unauthorized();
+			}
+			//检查登陆的用户是否为管理员
+			User user = await authentication.GetUserTypeAsync(guid);
+			if (user == null || (user.UserType != UserType.Administrator))
+			{
+				return Unauthorized();
+			}
 			Show show = await showRepository.GetShowAsync(showId);
 			if (show == null)
 			{
@@ -136,7 +183,7 @@ namespace CinemaTicketing.Controllers
 			return Ok(result);
 		}
 		/// <summary>
-		/// 为Hall添加链接
+		/// 为show添加链接
 		/// </summary>
 		/// <param name="showId"></param>
 		/// <returns></returns>
@@ -156,7 +203,7 @@ namespace CinemaTicketing.Controllers
 			return links;
 		}
 		/// <summary>
-		/// 为hall集合添加分页信息
+		/// 为show集合添加分页信息
 		/// </summary>
 		/// <param name="parameters"></param>
 		/// <param name="hasPrevious"></param>
