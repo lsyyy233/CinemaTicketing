@@ -1,10 +1,19 @@
 var hallSelfPageUrl;
 var hallNextPageUrl;
 var hallPreviousPageUrl;
+var hallPageNum;
+var hallPageSize
 
+function getHallList() {
+	if (arguments.length == 1) {
+		getHallListNormal(arguments[0]);
+	}
+	if (arguments.length == 3) {
+		getHallListNormal(arguments[0], arguments[1], arguments[2]);
+	}
+}
 
-
-function getHallList(url) {
+function getHallListNormal(url) {
 	$.ajax({
 		beforeSend: function(request) {
 			request.setRequestHeader("Accept", "application/vnd.cinemaTicketing.hateoas+json");
@@ -22,12 +31,32 @@ function getHallList(url) {
 	});
 }
 
+function getHallListByPage(url, pageNumber, pageSize) {
+	$.ajax({
+		beforeSend: function(request) {
+			request.setRequestHeader("Accept", "application/vnd.cinemaTicketing.hateoas+json");
+			request.setRequestHeader("Content-type", "application/json");
+		},
+		type: "get", //设置请求类型
+		url: url + "?pageNum=" + pageNumber + "&pageSize=" + pageSize, //请求后台的url地址
+		// data: "", //请求参数，是key-value形式的，如 {name:"jason"}
+		success: function(result) { //请求成功后的回调函数，data为后台返回的值
+			console.log(result);
+			showHalls(result);
+			showHallPageInfo(result);
+			getLinksForHallPage(result);
+		}
+	});
+}
+
 function showHallPageInfo(result) {
 	var currentPage = result["currentPage"];
 	var totalCount = result["totalCount"];
 	var totalPages = result["totalPages"];
 	document.getElementById("hallPageInfo").innerHTML = "当前页数:" + currentPage + "/总页数:" + totalPages + " 共" + totalCount +
 		"条数据";
+	hallPageNum = currentPage;
+	hallPageSize = result["pageSize"];
 }
 
 function showHalls(result) {
@@ -61,11 +90,10 @@ function showHalls(result) {
 }
 
 function editHall(hallId) {
-	alert("hallId = " + hallId);
+	window.location.href = "/editHall.html?guid=" + guid + "&hallId=" + hallId;
 }
 //删除hall
 function deleteHall(deleteLink) {
-	console.log("deleteLink = " + deleteLink);
 	$.ajax({
 		beforeSend: function(request) {
 			request.setRequestHeader("guid", guid);
@@ -80,40 +108,37 @@ function deleteHall(deleteLink) {
 }
 
 function jumpToAddHall() {
-
+	window.location.href = "/addHall.html" + "?guid=" + guid + "&pageNum=" + hallPageNum + "&pageSize=" + hallPageSize;
 }
 
 function hallPreviousPage() {
-
+	getHallList(hallPreviousPageUrl);
 }
 
 function hallNextPage() {
-
+	getHallList(hallNextPageUrl);
 }
 
 // 获取翻页链接
 function getLinksForHallPage(result) {
 	var linksForHalls = result["linksForHalls"]
-	document.getElementById("Next").disabled = true;
-	document.getElementById("Previous").disabled = true;
+	document.getElementById("hallNext").disabled = true;
+	document.getElementById("hallPrevious").disabled = true;
 	// console.log(links);
 	for (var i = 0; i < linksForHalls.length; i++) {
 		link = linksForHalls[i];
 
 		// console.log("link = " + JSON.stringify(link));
 		if (link["rel"] == "next_page") {
-			document.getElementById("Next").disabled = false;
+			document.getElementById("hallNext").disabled = false;
 			hallNextPageUrl = link["href"];
-			// console.log("nextUrl = " + nextPageUrl);
 		}
 		if (link["rel"] == "previous_page") {
-			document.getElementById("Previous").disabled = false;
+			document.getElementById("hallPrevious").disabled = false;
 			hallPreviousPageUrl = link["href"];
-			// console.log("previousUrl = " + previousPageUrl);
 		}
 		if (link["rel"] == "self") {
 			hallSelfPageUrl = link["href"];
-			// console.log("nextUrl = " + nextPageUrl);
 		}
 	}
 }

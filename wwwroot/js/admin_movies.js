@@ -95,8 +95,8 @@ function deleteMovie(deleteLink) {
 // 获取翻页链接
 function getLinksForMoviePage(result) {
 	var linksForMovies = result["linksForMovies"]
-	document.getElementById("Next").disabled = true;
-	document.getElementById("Previous").disabled = true;
+	document.getElementById("movieNext").disabled = true;
+	document.getElementById("moviePrevious").disabled = true;
 	// console.log(links);
 	for (var i = 0; i < linksForMovies.length; i++) {
 		link = linksForMovies[i];

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>修改影厅</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.css">
+	<script type="application/javascript" src="./lib/jquery/dist/jquery.js"></script>
+	<script type="application/javascript" src="./js/jquery.params.js"></script>
+	<script type="text/javascript" src="js/editHall.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class=" row">
+			<div class="col-md-2">
+				<img alt="Logo" src="/images/1.png" style="height:60px;width:60px">
+			</div>
+			<div class="col-md-10">
+				<span class=" h2">修改影厅</span>
+			</div>
+		</div>
+		<form id="form">
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="name">名称</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" type="text" id="name" name="name" value="" />
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="introduction">座位数量</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" type="number" id="seats" name="seats" value="" />
+				</div>
+			</div>
+
+		</form>
+		<div>
+			<div class="col-md-2 offset-md-2">
+				<button class="btn btn-primary" onclick=javascript:submit() style="width: 70px;">提交</button>
+				<button class="btn btn-primary" onclick=javascrtpt:goBack() style="width: 70px;">返回</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

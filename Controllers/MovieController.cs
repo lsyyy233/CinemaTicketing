@@ -37,7 +37,7 @@ namespace CinemaTicketing.Controllers
 		/// <returns></returns>
 		[HttpGet(Name = nameof(GetMovies))]
 		public async Task<ActionResult> GetMovies(
-			[FromQuery] PagedParametersBase pagedParameters, 
+			[FromQuery] PagedParametersBase pagedParameters,
 			[FromHeader(Name = "Accept")] string mediaType)
 		{
 			//
@@ -111,8 +111,21 @@ namespace CinemaTicketing.Controllers
 		/// <param name="movieId"></param>
 		/// <returns></returns>
 		[HttpDelete("{movieId}", Name = nameof(DeleteMovie))]
-		public async Task<IActionResult> DeleteMovie(int movieId)
+		public async Task<IActionResult> DeleteMovie(
+			int movieId,
+			[FromHeader(Name = "guid")] Guid guid)
 		{
+			//检查用户是否已经登录
+			if (guid == Guid.Empty)
+			{
+				return Unauthorized();
+			}
+			//检查登陆的用户是否为管理员
+			User user = await authentication.GetUserTypeAsync(guid);
+			if (user == null || (user.UserType != UserType.Administrator))
+			{
+				return Unauthorized();
+			}
 			Movie movie = await movieRepository.GetMovieAsync(movieId);
 			if (movie == null)
 			{
@@ -128,7 +141,9 @@ namespace CinemaTicketing.Controllers
 		/// <param name="movieAddDto"></param>
 		/// <returns></returns>
 		[HttpPost(Name = nameof(AddMovie))]
-		public async Task<ActionResult> AddMovie([FromBody] MovieAddDto movieAddDto, [FromHeader(Name = "guid")] Guid guid)
+		public async Task<ActionResult> AddMovie(
+			[FromBody] MovieAddDto movieAddDto,
+			[FromHeader(Name = "guid")] Guid guid)
 		{
 			//检查用户是否已经登录
 			if (guid == Guid.Empty)
@@ -230,7 +245,7 @@ namespace CinemaTicketing.Controllers
 			});
 		}
 		/// <summary>
-		/// 
+		/// 更新电影
 		/// </summary>
 		/// <param name="guid"></param>
 		/// <param name="movieUpdateDto"></param>

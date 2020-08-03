@@ -65,6 +65,10 @@ namespace CinemaTicketing.Services.Impl
 				);
 			return pagedHalls;
 		}
+		public void UpdateHall(Hall hall)
+		{
+
+		}
 		public async Task<bool> SaveAsync()
 		{
 			return await _DbContext.SaveChangesAsync() >= 0;

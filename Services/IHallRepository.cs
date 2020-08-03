@@ -18,5 +18,6 @@ namespace CinemaTicketing.Services
 		Task<bool> SaveAsync();
 		Task<PagedListBase<Hall>> GetHallsAsync(PagedParametersBase pagedParameters);
 		void DeleteHall(Hall hall);
+		void UpdateHall(Hall hall);
 	}
 }
