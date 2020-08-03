@@ -1,19 +1,44 @@
 var guid;
 var date;
 var hallId;
+var showId;
+var movieId;
+var showNumber;
 
 window.onload = function() {
 	console.clear();
 	guid = $.query.get("guid");
-	getMovies();
-	// getHalls();
+	showId = $.query.get("showId");
+	getShowInfo();
+}
+
+function getShowInfo(){
+	$.ajax({
+		type: "get", //设置请求类型
+		url: "/api/shows/"+showId, //请求后台的url地址
+		success: function(result) { //请求成功后的回调函数，data为后台返回的值
+			console.log(result);
+			//显示movie到前台
+			movieId = result["movieId"];
+			getMovies();
+			//显示date到前台
+			date ="" + result["dateTime"].split("T")[0];
+			document.all.date.value = date;
+			//显示hall到前台
+			hallId = result["hallId"];
+			getHalls(date);
+			showNumber = result["showNum"];
+			getShows();
+			
+		}
+	});
 }
 
 function goBack() {
 	window.location.href = "../admin.html?" + "guid=" + guid;
 }
 
-function addShow() {
+function submit() {
 	var movieId = form.movie.value;
 	if (movieId == null || movieId == undefined || movieId == "") {
 		alert("请选择电影");
@@ -68,6 +93,7 @@ function sendRequest(showToAddJson) {
 }
 
 function getHalls() {
+	console.log(date);
 	$.ajax({
 		type: "get", //设置请求类型
 		url: "/api/halls/date/" + date, //请求后台的url地址
@@ -77,7 +103,8 @@ function getHalls() {
 				var hall = result[i];
 				str += "<option value =\"" + hall["id"] + "\">" + hall["name"] + "</option>";
 			}
-			document.getElementById("hall").innerHTML = str;
+			document.getElementById("halls").innerHTML = str;
+			document.all.halls.value = hallId;
 		}
 	});
 }
@@ -92,7 +119,8 @@ function getMovies() {
 				var movie = result[i];
 				str += "<option value =\"" + movie["id"] + "\">" + movie["name"] + "</option>";
 			}
-			document.getElementById("movie").innerHTML = str;
+			document.getElementById("movies").innerHTML = str;
+			document.all.movies.value = movieId;
 		}
 	});
 }
@@ -108,6 +136,7 @@ function getShows() {
 				str += "<option value =\"" + showNum + "\">" + showNum + "</option>";
 			}
 			document.getElementById("showNum").innerHTML = str;
+			document.all.showNum = showNumber;
 		}
 	});
 }
@@ -118,6 +147,6 @@ function dateChange() {
 }
 
 function hallChange() {
-	hallId = document.getElementById("hall").value;
+	hallId = document.getElementById("halls").value;
 	getShows();
 }

@@ -32,6 +32,17 @@ namespace CinemaTicketing.Controllers
 			this.authentication = authentication;
 		}
 		/// <summary>
+		/// 
+		/// </summary>
+		/// <returns></returns>
+		[HttpGet("notUnderTheHit/",Name =nameof(GetMoviesNotUnderTheHit))]
+		public async Task<ActionResult> GetMoviesNotUnderTheHit()
+		{
+			List<Movie> movies = await movieRepository.GetMoviesNotUnderTheHitAsync();
+			List<MovieDto> movieDtos = mapper.Map<List<MovieDto>>(movies);
+			return Ok(movieDtos);
+		}
+		/// <summary>
 		/// 获取所有电影信息
 		/// </summary>
 		/// <returns></returns>

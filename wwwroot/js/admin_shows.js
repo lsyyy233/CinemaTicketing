@@ -52,9 +52,10 @@ function showShows(result) {
 			"<td>" + show["dateTime"].split('T')[0] + "</td>" +
 			"<td>" + show["hallName"] + "</td>" +
 			"<td>" + show["price"] + "</td>" +
-			"<td>" + "修改" + "</td>" +
-			"<td><a href='javascript:;' onclick='deleteShow(" + deleteUrl + ")'>" + "删除" + "</a></td>" +
-			"</tr>";
+			"<td><a href='javascript:;' onclick='editShow(" + show["id"] + ")'>" + "修改" +
+				"</a></td>" +
+			"<td><a href='javascript:;' onclick='deleteShow(" + deleteUrl + ")'>" + "删除" +
+				"</a></td>";
 	}
 	if (shows.length < 5) {
 		for (var i = 0; i < (5 - shows.length); i++) {
@@ -101,7 +102,6 @@ function getLinksForShowPage(result) {
 		}
 		if (link["rel"] == "self") {
 			showSelfPageUrl = link["href"];
-			console.log(showSelfPageUrl);
 		}
 	}
 }
@@ -116,4 +116,8 @@ function showPreviousPage() {
 
 function showNextPage() {
 	getShowList(showNextPageUrl);
+}
+
+function editShow(showId){
+	window.location.href="/editShow.html?guid=" + guid+"&showId="+showId;
 }

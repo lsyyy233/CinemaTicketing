@@ -65,6 +65,8 @@ namespace CinemaTicketing.Controllers
 			{
 				return NotFound();
 			}
+			show.Movie = await movieRepository.GetMovieAsync(show.MovieId);
+			show.Hall = await hallRepository.GetHallAsync(show.HallId);
 			ShowDto showDto = mapper.Map<ShowDto>(show);
 			return Ok(showDto);
 

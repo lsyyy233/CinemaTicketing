@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>添加场次</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.css">
+	<script type="application/javascript" src="./lib/jquery/dist/jquery.js"></script>
+	<script type="application/javascript" src="./js/jquery.params.js"></script>
+	<script type="text/javascript" src="js/editShow.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class=" row">
+			<div class="col-md-2">
+				<img alt="Logo" src="/images/1.png" style="height:60px;width:60px">
+			</div>
+			<div class="col-md-10">
+				<span class=" h2">添加场次</span>
+			</div>
+		</div>
+		<form id="form">
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="movies">电影</label>
+				</div>
+				<div class="col-md-8">
+					<select class="custom-select" id="movies" value="">
+						
+					</select>
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="date">日期</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" onchange="dateChange()" type="date" id="date" name="date" value="" />
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="halls">影厅</label>
+				</div>
+				<div class="col-md-8">
+					<select onchange="hallChange()" class="custom-select" id="halls" value="">
+						
+					</select>
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="showNum">场次</label>
+				</div>
+				<div class="col-md-8">
+					<select class="custom-select" id="showNum" value="">
+						
+					</select>
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="price">价格</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" type="number" id="price" name="price" value="" />
+				</div>
+			</div>
+		</form>
+		<div>
+			<div class="col-md-2 offset-md-2">
+				<button class="btn btn-primary" onclick=javascript:submit() style="width: 70px;">添加</button>
+				<button class="btn btn-primary" onclick=javascrtpt:goBack() style="width: 70px;">返回</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

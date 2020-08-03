@@ -17,7 +17,17 @@ namespace CinemaTicketing.Services.Impl
 		{
 			_DbContext = cinemaTicketingDbContext;
 		}
-
+		/// <summary>
+		/// 获取所有没有下映的电影
+		/// </summary>
+		/// <returns></returns>
+		public async Task<List<Movie>> GetMoviesNotUnderTheHitAsync()
+		{
+			List<Movie> movies = await _DbContext.Movies
+				.Where(x => x.IsUnderTheHit == false)
+				.ToListAsync();
+			return movies;
+		}
 		/// <summary>
 		/// 添加电影到影库
 		/// </summary>
