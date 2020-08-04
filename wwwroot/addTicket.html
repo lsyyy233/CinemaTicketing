@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>用户购票</title>
+	<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+	<link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.css">
+	<script type="application/javascript" src="./lib/jquery/dist/jquery.js"></script>
+	<script type="application/javascript" src="./js/jquery.params.js"></script>
+	<script type="application/javascript" src="./js/addTicket.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class=" row">
+			<div class="col-md-2">
+				<img alt="Logo" src="/images/1.png" style="height:60px;width:60px">
+			</div>
+			<div class="col-md-10">
+				<span class=" h2">用户购票</span>
+			</div>
+		</div>
+		<form id="form">
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="movie">电影名</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" disabled="disabled" type="text" name="movie" id="movie" value="" />
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="date">日期</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" disabled="disabled" type="date" id="date" name="date" value="" />
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="hall">影厅</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" disabled="disabled" type="text" name="hall" id="hall" value="" />
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="showNum">场次</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" disabled="disabled" type="text" name="showNum" id="showNum" value="" />
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="price">价格</label>
+				</div>
+				<div class="col-md-8">
+					<input class="form-control" disabled="disabled" type="number" name="price" id="price" value="" />
+				</div>
+			</div>
+			<div class="row form-group offset-md-2">
+				<div class="col-md-6">
+					<label for="seatNum">座位号</label>
+				</div>
+				<div class="col-md-8">
+					<select class="form-control" name="seatNum" id="seatNum" value="" >
+						
+					</select>
+				</div>
+			</div>
+		</form>
+		<div>
+			<div class="col-md-2 offset-md-2">
+				<button class="btn btn-primary" onclick=javascript:addTicket() style="width: 70px;">添加</button>
+				<button class="btn btn-primary" onclick=javascrtpt:goBack() style="width: 70px;">返回</button>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

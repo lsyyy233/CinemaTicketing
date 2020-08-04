@@ -10,7 +10,7 @@ window.onload = function() {
 }
 
 function goBack() {
-	window.location.href = "../admin.html?" + "guid=" + guid;
+	window.location.href = "/admin.html?" + "guid=" + guid;
 }
 
 function addShow() {

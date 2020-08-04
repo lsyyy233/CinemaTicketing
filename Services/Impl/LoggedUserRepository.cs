@@ -12,10 +12,15 @@ namespace CinemaTicketing.Services.Impl
 	public class LoggedUserRepository : ILoggedUserRepository
 	{
 		protected readonly CinemaTicketingDbContext _DbContext;
+
 		public LoggedUserRepository(CinemaTicketingDbContext cinemaTicketingDbContext)
 		{
 			_DbContext = cinemaTicketingDbContext;
 		}
+		/// <summary>
+		/// 用户登录
+		/// </summary>
+		/// <param name="loggedUser"></param>
 		public void AddLoggedUser(LoggedUser loggedUser)
 		{
 			if (loggedUser == null)
@@ -25,6 +30,10 @@ namespace CinemaTicketing.Services.Impl
 			loggedUser.Guid = Guid.NewGuid();
 			_DbContext.LoggedUsers.Add(loggedUser);
 		}
+		/// <summary>
+		/// 用户注销登录
+		/// </summary>
+		/// <param name="loggedUser"></param>
 		public void DeleteLoggedUser(LoggedUser loggedUser)
 		{
 			if (loggedUser == null)

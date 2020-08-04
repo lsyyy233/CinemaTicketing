@@ -17,5 +17,6 @@ namespace CinemaTicketing.Services
 		/// </summary>
 		/// <returns>是否执行成功</returns>
 		Task<bool> SaveAsync();
+		Task<List<int>> GetSaledSeatListAsync(int showId);
 	}
 }

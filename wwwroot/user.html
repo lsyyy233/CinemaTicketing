@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>用户</title>
+		<link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon" />
+		<link rel="stylesheet" type="text/css" href="./lib/bootstrap/dist/css/bootstrap.css">
+		<script type="text/javascript" src="./lib/jquery/dist/jquery.js"></script>
+		<script type="text/javascript" src="./js/jquery.params.js"></script>
+		<script type="text/javascript" src="js/user.js"></script>
+	</head>
+	<body>
+		<div class="container">
+			<div class=" row">
+				<div class="col-md-1">
+					<img alt="Logo" src="./images/1.png" style="height:60px;width:60px">
+				</div>
+				<div class="col-md-8">
+					<span class=" h2" id="currentUser">当前用户：</span>
+				</div>
+			</div>
+			<br/>
+			<div class="row">
+				<div class="col-md-20 offset-md-1">
+					<span class=" h3">场次</span>
+					<table class="table" id="showTable"  style="text-align: center; width: 969px;">
+						
+					</table>
+					<button class="btn btn-primary" onclick=javascript:showPreviousPage() style="width: 100px;" id="showPrevious" disabled="disabled">上一页</button>
+					<span id = "showPageInfo"style="display:-moz-inline-box; display:inline-block; width: 15.625rem; text-align: center;"></span>
+					<button class="btn btn-primary" onclick=javascript:showNextPage() style="width: 100px;" id="showNext" disabled="disabled">下一页</button>
+					<!-- <button class="btn btn-primary" onclick=javascript:jumpToAddShow() style="width: 70px; float: right;">添加</button> -->
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

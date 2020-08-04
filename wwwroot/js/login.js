@@ -21,6 +21,7 @@ function sendRequest(username,password){
 			if(userDto["userType"] == 0){
 				window.location.href = "/admin.html?guid="+guid;
 			}
+			else(window.location.href="/user.html?guid="+guid);
 			console.log(textStatus);
 		},
 		error: function (message) {

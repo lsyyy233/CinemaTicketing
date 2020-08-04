@@ -32,10 +32,7 @@ namespace CinemaTicketing.Services.Impl
 				.Where(x => x.DateTime == date && x.HallId == hallId)
 				.Select(x => x.ShowNum)
 				.ToListAsync();
-			foreach (ShowNum showNum in lists)
-			{
-				availableShows.Remove(showNum.ToString());
-			}
+			
 			if (showId != null)
 			{
 				Show show = await _DbContext.Shows
@@ -43,7 +40,11 @@ namespace CinemaTicketing.Services.Impl
 					.SingleOrDefaultAsync();
 				if (show != null)
 				{
-					availableShows.Add(show.ShowNum.ToString());
+					lists.Remove(show.ShowNum);
+				}
+				foreach (ShowNum showNum in lists)
+				{
+					availableShows.Remove(showNum.ToString());
 				}
 
 			}

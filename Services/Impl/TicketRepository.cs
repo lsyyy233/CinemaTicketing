@@ -15,6 +15,14 @@ namespace CinemaTicketing.Services.Impl
 		{
 			_DbContext = cinemaTicketingDbContext;
 		}
+		public async Task<List<int>> GetSaledSeatListAsync(int showId)
+		{
+			List<int> saledSeatList = await _DbContext.Tickets
+				.Where(x => x.ShowId == showId)
+				.Select(x => x.SeatNum)
+				.ToListAsync();
+			return saledSeatList;
+		}
 		/// <summary>
 		/// 售票
 		/// </summary>

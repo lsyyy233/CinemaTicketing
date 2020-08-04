@@ -1,33 +1,63 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using CinemaTicketing.Services;
+﻿using AutoMapper;
 using CinemaTicketing.Models.Dtos;
-using CinemaTicketing.Models.Entity;
-using AutoMapper;
 using CinemaTicketing.Models.Dtos.AddDtos;
+using CinemaTicketing.Models.Entity;
+using CinemaTicketing.Services;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace CinemaTicketing.Controllers
 {
 	[ApiController]
-	[Route("api/ticket")]
+	[Route("api/tickets")]
 	public class TicketController :ControllerBase
 	{
 		private readonly IShowRepository showRepository;
 		private readonly IUserRepository userRepository;
 		private readonly ITicketRepository ticketRepository;
+		private readonly ILoggedUserRepository loggedUserRepository;
+		private readonly IHallRepository hallRepository;
+		private readonly IMovieRepository movieRepository;
 		private readonly IMapper mapper;
-		public TicketController(ITicketRepository ticketRepository, IMapper mapper, IShowRepository showRepository, IUserRepository userRepository)
+		public TicketController(
+			ITicketRepository ticketRepository,
+			IMapper mapper,
+			IShowRepository showRepository,
+			IUserRepository userRepository,
+			ILoggedUserRepository loggedUserRepository,
+			IHallRepository hallRepository, 
+			IMovieRepository movieRepository)
 		{
 			this.ticketRepository = ticketRepository;
 			this.mapper = mapper;
 			this.showRepository = showRepository;
 			this.userRepository = userRepository;
+			this.loggedUserRepository = loggedUserRepository;
+			this.hallRepository = hallRepository;
+			this.movieRepository = movieRepository;
+		}
+		[HttpGet("{showId}/seats")]
+		public async Task<ActionResult> GetSeats(int showId)
+		{
+			Show show = await showRepository.GetShowAsync(showId);
+			if(show == null)
+			{
+				return NotFound();
+			}
+			Hall hall = await hallRepository.GetHallAsync(show.HallId);
+			int seats = hall.Seats;
+			List<int> seatList = new List<int>();
+			for(int i = 1;i<= seats; i++)
+			{
+				seatList.Add(i);
+			}
+			List<int> saledSeatList = await ticketRepository.GetSaledSeatListAsync(showId);
+			seatList.RemoveAll( x => saledSeatList.Contains(x));
+			return Ok(seatList);
 		}
 		/// <summary>
-		/// 
+		/// 获取电影票信息
 		/// </summary>
 		/// <param name="ticketId"></param>
 		/// <returns></returns>
@@ -39,7 +69,13 @@ namespace CinemaTicketing.Controllers
 			{
 				return NotFound();
 			}
+			Show show = await showRepository.GetShowAsync(ticket.ShowId);
+			Movie movie = await movieRepository.GetMovieAsync(show.MovieId);
+			Hall hall = await hallRepository.GetHallAsync(show.HallId);
+			show.Movie = movie;
+			show.Hall = hall;
 			TicketDto ticketDto = mapper.Map<TicketDto>(ticket);
+			ticketDto.ShowDto = mapper.Map<ShowDto>(show);
 			return Ok(ticketDto);
 		}
 		/// <summary>
@@ -51,11 +87,12 @@ namespace CinemaTicketing.Controllers
 		{
 			//检查对应的场次和用户是否存在
 			Show show = await showRepository.GetShowAsync(ticketAddDto.ShowId);
-			User user = await userRepository.GetUserAsync(ticketAddDto.UserId);
-			if(show == null || user == null)
+			LoggedUser loggedUser = await loggedUserRepository.GetLoggedUserAsync(ticketAddDto.Guid);
+			if(show == null || loggedUser == null)
 			{
 				return NotFound();
 			}
+			User user = await userRepository.GetUserAsync(loggedUser.UserId);
 			//检查该场次座位号是否已经售出
 			bool seatHasSaled = await ticketRepository.SeatHasSaledAsync(ticketAddDto.ShowId, ticketAddDto.SeatNum);
 			if (seatHasSaled)
@@ -64,9 +101,12 @@ namespace CinemaTicketing.Controllers
 			}
 			//添加到数据库
 			Ticket ticket = mapper.Map<Ticket>(ticketAddDto);
+			ticket.UserId = user.Id;
 			ticketRepository.AddTicket(ticket);
 			await ticketRepository.SaveAsync();
 			//将用户信息和场次信息添加到返回的数据中
+			show.Movie = await movieRepository.GetMovieAsync(show.MovieId);
+			show.Hall = await hallRepository.GetHallAsync(show.HallId);
 			ShowDto showDto = mapper.Map<ShowDto>(show);
 			UserDto userDto = mapper.Map<UserDto>(user);
 			TicketDto ticketDto = mapper.Map<TicketDto>(ticket);

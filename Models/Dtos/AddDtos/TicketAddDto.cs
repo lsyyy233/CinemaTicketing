@@ -7,7 +7,7 @@ namespace CinemaTicketing.Models.Dtos.AddDtos
 {
 	public class TicketAddDto
 	{
-		public int UserId { get; set; }
+		public Guid Guid { get; set; }
 		public int ShowId { get; set; }
 		public int SeatNum { get; set; }
 

@@ -31,7 +31,7 @@ function getShowInfo() {
 			showNumber = result["showNum"];
 			getShows();
 			price = result["price"];
-			console.log(price);
+			// console.log(price);
 			document.getElementById("price").value = price;
 
 		}
@@ -91,7 +91,6 @@ function sendRequest(showToUpdateJson) {
 		url: "/api/shows/", //请求后台的url地址
 		data: showToUpdateJson, //请求参数，是key-value形式的，如 {name:"jason"}m
 		success: function(result) { //请求成功后的回调函数，data为后台返回的值
-			console.log(result);
 			// getMovies();
 			getHalls()
 			getShows()
@@ -106,7 +105,7 @@ function sendRequest(showToUpdateJson) {
 }
 
 function getHalls() {
-	console.log(date);
+	// console.log(date);
 	$.ajax({
 		type: "get", //设置请求类型
 		url: "/api/halls/date/" + date, //请求后台的url地址
@@ -139,7 +138,7 @@ function getMovies() {
 }
 
 function getShows() {
-	console.clear();
+	// console.clear();
 	$.ajax({
 		type: "get", //设置请求类型
 		url: "/api/shows/available?hallId=" + hallId + "&date=" + date + "&showId=" + showId,
@@ -147,7 +146,7 @@ function getShows() {
 			var str = "<option style='display: none'></option>";
 			for (var i = 0; i < result.length; i++) {
 				var showNum = result[i];
-				console.log(showNum);
+				// console.log(showNum);
 				str += "<option value =\"" + showNum + "\">" + showNum + "</option>";
 			}
 			document.getElementById("showNum").innerHTML = str;
@@ -169,7 +168,7 @@ function dateChange() {
 }
 
 function hallChange() {
-	console.log(hallId);
+	// console.log(hallId);
 	hallId = document.getElementById("halls").value;
 	getShows();
 }
