@@ -34,7 +34,6 @@ function sendRequest(movieToAdd) {
 			request.setRequestHeader("Accept", "application/json");
 			request.setRequestHeader("Content-type", "application/json");
 		},
-		// async:false,
 		type: "post", //设置请求类型
 		url: "/api/movies/", //请求后台的url地址
 		data: movieToAdd, //请求参数，是key-value形式的，如 {name:"jason"}m
@@ -46,8 +45,6 @@ function sendRequest(movieToAdd) {
 			if (XMLHttpRequest.status == 401) {
 				alert("只允许管理员进行此操作！");
 			}
-			// alert(XMLHttpRequest.readyState);
-			// alert(textStatus);
 		}
 	});
 }

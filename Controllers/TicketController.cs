@@ -203,18 +203,21 @@ namespace CinemaTicketing.Controllers
 		/// <param name="guid"></param>
 		/// <param name="ticketId"></param>
 		/// <returns></returns>
-		[HttpDelete(Name = nameof(DeleteTicket))]
-		public async Task<ActionResult> DeleteTicket(Guid guid, int ticketId)
+		[HttpDelete("{ticketId}/", Name = nameof(DeleteTicket))]
+		public async Task<ActionResult> DeleteTicket(
+			[FromHeader] Guid guid,
+			int ticketId)
 		{
-			User user = await authentication.GetUserTypeAsync(guid);
-			if (user == null || user.UserType != UserType.Administrator)
-			{
-				return Unauthorized();
-			}
 			Ticket ticket = await ticketRepository.GetTicketAsync(ticketId);
 			if (ticket == null)
 			{
 				return NotFound();
+			}
+			User user = await authentication.GetUserTypeAsync(guid);
+			//只有当登录的用户不为空，并且登录的用户为管理员 或者登录的用户与要删除的电影票对应的用户相等时，才允许删除
+			if (!(user == null || (user.UserType == UserType.Administrator || ticket.UserId == user.Id)))
+			{
+				return Unauthorized();
 			}
 			ticketRepository.DeleteTicket(ticket);
 			await ticketRepository.SaveAsync();
