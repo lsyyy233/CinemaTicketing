@@ -23,6 +23,6 @@ namespace CinemaTicketing.Services
 		/// <returns>是否执行成功</returns>
 		Task<bool> SaveAsync();
 		Task<List<Show>> GetShowsNotExpire(int? movieId);
-		Task<List<string>> GetAvailableShowsAsync(DateTime date, int hallId);
+		Task<List<string>> GetAvailableShowsAsync(DateTime date, int hallId,int? showId);
 	}
 }

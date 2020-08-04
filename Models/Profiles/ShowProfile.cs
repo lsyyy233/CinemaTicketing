@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CinemaTicketing.Models.Dtos;
 using CinemaTicketing.Models.Dtos.AddDtos;
+using CinemaTicketing.Models.Dtos.UpdateDtos;
 using CinemaTicketing.Models.Entity;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,9 @@ namespace CinemaTicketing.Models.Profiles
 			CreateMap<ShowAddDto, Show>()
 				.ForMember(dest => dest.ShowNum, opt => opt.MapFrom(src => Enum.Parse<ShowNum>(src.ShowNum)))
 				.ForMember(dest =>dest.DateTime, opt => opt.MapFrom(src => src.DateTime.Date));
+			CreateMap<ShowUpdateDto,Show>()
+				.ForMember(dest => dest.ShowNum, opt => opt.MapFrom(src => Enum.Parse<ShowNum>(src.ShowNum)))
+				.ForMember(dest => dest.DateTime, opt => opt.MapFrom(src => src.DateTime.Date));
 		}
 	}
 }

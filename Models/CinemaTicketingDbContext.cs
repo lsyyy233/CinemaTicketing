@@ -28,6 +28,10 @@ namespace CinemaTicketing.Models
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
+			modelBuilder.Entity<Show>()
+				.HasIndex(x => x.Id)
+				.IsUnique();
+
 			#region 对应关系
 			//Ticket和Show的对应关系
 			//一个TicketTemplates对应多个Ticket

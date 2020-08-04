@@ -100,7 +100,7 @@ function getMovies() {
 function getShows() {
 	$.ajax({
 		type: "get", //设置请求类型
-		url: "/api/shows/hall/" + hallId + "/" + date, //请求后台的url地址
+		url: "/api/shows/available?hallId="+hallId+"&date="+date, //请求后台的url地址
 		success: function(result) { //请求成功后的回调函数，data为后台返回的值
 			var str = "<option style='display: none'></option>";
 			for (var i = 0; i < result.length; i++) {

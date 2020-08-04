@@ -20,7 +20,7 @@ namespace CinemaTicketing.Models.Entity
 	/// </summary>
 	public class Show
 	{
-		public int Id { get; set; }
+		public int? Id { get; set; }
 		public DateTime DateTime { get; set; }
 		public ShowNum ShowNum { get; set; }
 		public int MovieId { get; set; }

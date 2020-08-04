@@ -23,7 +23,7 @@ namespace CinemaTicketing.Services.Impl
 		/// <param name="date"></param>
 		/// <param name="hall"></param>
 		/// <returns></returns>
-		public async Task<List<string>> GetAvailableShowsAsync(DateTime date,int hallId)
+		public async Task<List<string>> GetAvailableShowsAsync(DateTime date, int hallId, int? showId)
 		{
 			string[] showNums = Enum.GetNames(typeof(ShowNum));
 			List<string> availableShows = new List<string>();
@@ -32,9 +32,20 @@ namespace CinemaTicketing.Services.Impl
 				.Where(x => x.DateTime == date && x.HallId == hallId)
 				.Select(x => x.ShowNum)
 				.ToListAsync();
-			foreach(ShowNum showNum in lists)
+			foreach (ShowNum showNum in lists)
 			{
 				availableShows.Remove(showNum.ToString());
+			}
+			if (showId != null)
+			{
+				Show show = await _DbContext.Shows
+					.Where(x => x.Id == showId && x.HallId == hallId)
+					.SingleOrDefaultAsync();
+				if (show != null)
+				{
+					availableShows.Add(show.ShowNum.ToString());
+				}
+
 			}
 			return availableShows;
 		}
@@ -48,13 +59,16 @@ namespace CinemaTicketing.Services.Impl
 			{
 				throw new ArgumentNullException(nameof(show));
 			}
-			try
+			if (show.Id == null)
 			{
-				show.Id = _DbContext.Shows.Select(x => x.Id).Max() + 1;
-			}
-			catch (System.InvalidOperationException)
-			{
-				show.Id = 1;
+				try
+				{
+					show.Id = _DbContext.Shows.Select(x => x.Id).Max() + 1;
+				}
+				catch (System.InvalidOperationException)
+				{
+					show.Id = 1;
+				}
 			}
 			_DbContext.Shows.Add(show);
 		}
@@ -87,7 +101,7 @@ namespace CinemaTicketing.Services.Impl
 		/// <returns></returns>
 		public async Task<PagedListBase<Show>> GetShowsAsync(PagedParametersBase pagedParameters)
 		{
-			IQueryable<Show> queryExpression =  _DbContext.Shows.AsQueryable<Show>();
+			IQueryable<Show> queryExpression = _DbContext.Shows.AsQueryable<Show>();
 			PagedListBase<Show> pagedShows = await PagedListBase<Show>.CreateAsync(
 				queryExpression,
 				pagedParameters.PageNumber,
@@ -105,7 +119,7 @@ namespace CinemaTicketing.Services.Impl
 			return await _DbContext.Shows
 				.Where(x => x.DateTime == today)
 				.ToListAsync();
-			 
+
 		}
 		/// <summary>
 		/// 获取指定电影Id的所有未过期的场次
@@ -117,7 +131,7 @@ namespace CinemaTicketing.Services.Impl
 
 			IQueryable<Show> shows = _DbContext.Shows
 			.Where(x => (DateTime.Compare(DateTime.Now.Date, x.DateTime)) <= 0);
-			if(movieId != null)
+			if (movieId != null)
 			{
 				shows = shows.Where(x => x.MovieId == movieId);
 			}
@@ -143,7 +157,7 @@ namespace CinemaTicketing.Services.Impl
 			{
 				result = result.Where(x => x.ShowNum == showNum);
 			}
-			return await result.ToListAsync() ;
+			return await result.ToListAsync();
 		}
 	}
 }
