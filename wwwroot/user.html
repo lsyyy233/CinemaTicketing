@@ -29,9 +29,25 @@
 					<button class="btn btn-primary" onclick=javascript:showPreviousPage() style="width: 100px;" id="showPrevious" disabled="disabled">上一页</button>
 					<span id = "showPageInfo"style="display:-moz-inline-box; display:inline-block; width: 15.625rem; text-align: center;"></span>
 					<button class="btn btn-primary" onclick=javascript:showNextPage() style="width: 100px;" id="showNext" disabled="disabled">下一页</button>
-					<!-- <button class="btn btn-primary" onclick=javascript:jumpToAddShow() style="width: 70px; float: right;">添加</button> -->
+				</div>
+				<div class="col-md-20 offset-md-1">
+					<span class=" h3">我的电影票</span>
+					<table class="table" id="hallTable"  style="text-align: center; width: 969px;" border="1">
+						<tr>
+							<th>电影名</th>
+							<th>时间</th>
+							<th style="width: 200px;">影厅</th>
+							<th>价格</th>
+							<th>操作</th>
+						</tr>
+					</table>
+					<button class="btn btn-primary" onclick=javascript:ticketPreviousPage() style="width: 100px;" id="hallPrevious" disabled="disabled">上一页</button>
+					<span id = "hallPageInfo"style="display:-moz-inline-box; display:inline-block; width: 15.625rem; text-align: center;"></span>
+					<button class="btn btn-primary" onclick=javascript:ticketNextPage() style="width: 100px;" id="hallNext" disabled="disabled">下一页</button>
+					<!-- <button class="btn btn-primary" onclick=javascript:jumpToAddHall() style="width: 70px; float: right;">添加</button> -->
 				</div>
 			</div>
+			
 		</div>
 	</body>
 </html>

@@ -37,6 +37,12 @@ namespace CinemaTicketing.Controllers
 			this.hallRepository = hallRepository;
 			this.authentication = authentication;
 		}
+		/// <summary>
+		/// 更新Show
+		/// </summary>
+		/// <param name="showUpdateDto"></param>
+		/// <param name="guid"></param>
+		/// <returns></returns>
 		[HttpPut(Name = nameof(UpdateShow))]
 		public async Task<ActionResult> UpdateShow(
 			[FromBody] ShowUpdateDto showUpdateDto,
