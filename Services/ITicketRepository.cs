@@ -1,7 +1,9 @@
-﻿using CinemaTicketing.Models.Entity;
+﻿using CinemaTicketing.Helpers.Pagination;
+using CinemaTicketing.Models.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace CinemaTicketing.Services
@@ -18,5 +20,6 @@ namespace CinemaTicketing.Services
 		/// <returns>是否执行成功</returns>
 		Task<bool> SaveAsync();
 		Task<List<int>> GetSaledSeatListAsync(int showId);
+		Task<PagedListBase<Ticket>> GetTicketsForUserAsync(PagedParametersBase pagedParameters, [Optional] int? userId);
 	}
 }

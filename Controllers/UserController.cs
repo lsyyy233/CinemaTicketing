@@ -1,12 +1,10 @@
 ﻿using AutoMapper;
-using CinemaTicketing.Models;
+using CinemaTicketing.Helpers;
 using CinemaTicketing.Models.Dtos;
 using CinemaTicketing.Models.Entity;
 using CinemaTicketing.Services;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CinemaTicketing.Controllers
@@ -18,19 +16,23 @@ namespace CinemaTicketing.Controllers
 		private readonly ILoggedUserRepository loggedUserRepository;
 		private readonly IUserRepository userRepository;
 		private readonly IMapper mapper;
-		public UserController(ILoggedUserRepository loggedUserRepository, IUserRepository userRepository, IMapper mapper)
+		public UserController(
+			ILoggedUserRepository loggedUserRepository,
+			IUserRepository userRepository,
+			IMapper mapper)
 		{
 			this.loggedUserRepository = loggedUserRepository;
 			this.userRepository = userRepository;
 			this.mapper = mapper;
 		}
+		
 		/// <summary>
 		/// 用户登录
 		/// </summary>
 		/// <param name="userLoginDto"></param>
 		/// <returns>如果登陆成功，返回LoggedUserDto对象</returns>
 		[HttpPost("login/", Name = nameof(LoginIn))]
-		public async Task<ActionResult<LoggedUserDto>> LoginIn([FromBody] UserLoginDto userLoginDto,[FromHeader(Name = "Guid")]string text)
+		public async Task<ActionResult<LoggedUserDto>> LoginIn([FromBody] UserLoginDto userLoginDto, [FromHeader(Name = "Guid")] string text)
 		{
 			Console.WriteLine(text);
 			LoggedUserDto loggedUserDto;
@@ -65,7 +67,7 @@ namespace CinemaTicketing.Controllers
 			loggedUserRepository.AddLoggedUser(newLoggedUser);
 			await loggedUserRepository.SaveAsync();
 			//返回登录信息
-			 loggedUserDto = mapper.Map<LoggedUserDto>(newLoggedUser);
+			loggedUserDto = mapper.Map<LoggedUserDto>(newLoggedUser);
 			userDto = mapper.Map<UserDto>(existsUser);
 			loggedUserDto.UserDto = userDto;
 			//return Ok(loggedUserDto);
@@ -90,5 +92,6 @@ namespace CinemaTicketing.Controllers
 			loggedUserDto.UserDto = userDto;
 			return Ok(loggedUserDto);
 		}
+
 	}
 }

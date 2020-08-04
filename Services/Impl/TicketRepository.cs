@@ -1,20 +1,47 @@
-﻿using CinemaTicketing.Models;
+﻿using CinemaTicketing.Helpers.Pagination;
+using CinemaTicketing.Models;
 using CinemaTicketing.Models.Entity;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace CinemaTicketing.Services.Impl
 {
-	public class TicketRepository :  ITicketRepository
+	public class TicketRepository : ITicketRepository
 	{
 		protected readonly CinemaTicketingDbContext _DbContext;
 		public TicketRepository(CinemaTicketingDbContext cinemaTicketingDbContext)
 		{
 			_DbContext = cinemaTicketingDbContext;
 		}
+
+		/// <summary>
+		/// 获取指定用户购买的所有电影票
+		/// </summary>
+		/// <param name="userId"></param>
+		/// <returns></returns>
+		public async Task<PagedListBase<Ticket>> GetTicketsForUserAsync(PagedParametersBase pagedParameters, [Optional] int? userId)
+		{
+			IQueryable<Ticket> ticketsQueryable = _DbContext.Tickets
+				.AsQueryable<Ticket>();
+			if (userId != null)
+			{
+				ticketsQueryable = ticketsQueryable.Where(x => x.UserId == userId);
+			}
+			PagedListBase<Ticket> pagedTicketsForUser = await PagedListBase<Ticket>.CreateAsync(
+				ticketsQueryable,
+				pagedParameters.PageNumber,
+				pagedParameters.PageSize);
+			return pagedTicketsForUser;
+		}
+		/// <summary>
+		/// 获取指定场次未售出的座位号
+		/// </summary>
+		/// <param name="showId"></param>
+		/// <returns></returns>
 		public async Task<List<int>> GetSaledSeatListAsync(int showId)
 		{
 			List<int> saledSeatList = await _DbContext.Tickets

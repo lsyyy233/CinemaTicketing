@@ -287,6 +287,13 @@ namespace CinemaTicketing.Models
 					UserName = "张三",
 					Password = "123789",
 					UserType = UserType.RegularUser
+				},
+				new User
+				{
+					Id = 3,
+					UserName = "李四",
+					Password = "123789",
+					UserType = UserType.RegularUser
 				});
 			#endregion
 		}
