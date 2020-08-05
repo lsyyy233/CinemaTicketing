@@ -26,9 +26,9 @@ namespace CinemaTicketing.Controllers
 			IHallRepository hallRepository, 
 			IAuthentication authentication)
 		{
-			this.mapper = mapper;
-			this.hallRepository = hallRepository;
-			this.authentication = authentication;
+			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			this.hallRepository = hallRepository ?? throw new ArgumentNullException(nameof(hallRepository));
+			this.authentication = authentication ?? throw new ArgumentNullException(nameof(authentication));
 		}
 		
 		/// <summary>

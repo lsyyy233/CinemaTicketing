@@ -15,7 +15,7 @@ namespace CinemaTicketing.Services.Impl
 
 		public LoggedUserRepository(CinemaTicketingDbContext cinemaTicketingDbContext)
 		{
-			_DbContext = cinemaTicketingDbContext;
+			_DbContext = cinemaTicketingDbContext ?? throw new ArgumentNullException(nameof(cinemaTicketingDbContext));
 		}
 		/// <summary>
 		/// 用户登录

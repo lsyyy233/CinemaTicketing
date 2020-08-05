@@ -15,8 +15,12 @@ function regeist(){
 		success: function (data,textStatus) {
 			alert("注册成功")
 		},
-		error: function (message) {
-			alert("注册失败" + JSON.stringify(message));
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			if (XMLHttpRequest.status == 409) {
+				alert("该用户名已存在！");
+			}
+			// alert(XMLHttpRequest.readyState);
+			// alert(textStatus);
 		}
 	});
 }

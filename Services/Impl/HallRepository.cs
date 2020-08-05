@@ -14,7 +14,7 @@ namespace CinemaTicketing.Services.Impl
 		protected readonly CinemaTicketingDbContext _DbContext;
 		public HallRepository(CinemaTicketingDbContext cinemaTicketingDbContext)
 		{
-			_DbContext = cinemaTicketingDbContext;
+			_DbContext = cinemaTicketingDbContext ?? throw new ArgumentNullException(nameof(cinemaTicketingDbContext));
 		}
 		/// <summary>
 		/// 获取指定日期没有排满场次的影厅

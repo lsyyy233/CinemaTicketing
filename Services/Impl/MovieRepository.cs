@@ -15,7 +15,7 @@ namespace CinemaTicketing.Services.Impl
 		protected readonly CinemaTicketingDbContext _DbContext;
 		public MovieRepository(CinemaTicketingDbContext cinemaTicketingDbContext)
 		{
-			_DbContext = cinemaTicketingDbContext;
+			_DbContext = cinemaTicketingDbContext ?? throw new ArgumentNullException(nameof(cinemaTicketingDbContext));
 		}
 		/// <summary>
 		/// 获取所有没有下映的电影

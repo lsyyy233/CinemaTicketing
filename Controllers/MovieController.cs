@@ -23,13 +23,13 @@ namespace CinemaTicketing.Controllers
 		private readonly IAuthentication authentication;
 		private readonly IMapper mapper;
 		public MovieController(
-			IMovieRepository repository,
+			IMovieRepository movieRepository,
 			IMapper mapper, IShowRepository showRepository, IAuthentication authentication = null)
 		{
-			this.movieRepository = repository ?? throw new ArgumentNullException(nameof(repository));
-			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper)); ;
-			this.showRepository = showRepository;
-			this.authentication = authentication;
+			this.movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
+			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			this.showRepository = showRepository ?? throw new ArgumentNullException(nameof(showRepository));
+			this.authentication = authentication ?? throw new ArgumentNullException(nameof(authentication));
 		}
 		/// <summary>
 		/// 

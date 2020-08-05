@@ -21,9 +21,9 @@ namespace CinemaTicketing.Controllers
 			IUserRepository userRepository,
 			IMapper mapper)
 		{
-			this.loggedUserRepository = loggedUserRepository;
-			this.userRepository = userRepository;
-			this.mapper = mapper;
+			this.loggedUserRepository = loggedUserRepository ?? throw new ArgumentNullException(nameof(loggedUserRepository));
+			this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
+			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
 		}
 		[HttpGet(Name =nameof(GetUserById))]
 		public async Task<ActionResult> GetUserById(int userId)

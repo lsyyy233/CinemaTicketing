@@ -31,11 +31,11 @@ namespace CinemaTicketing.Controllers
 			IHallRepository hallRepository,
 			IAuthentication authentication)
 		{
-			this.mapper = mapper;
-			this.showRepository = repository;
-			this.movieRepository = movieRepository;
-			this.hallRepository = hallRepository;
-			this.authentication = authentication;
+			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			this.showRepository = repository ?? throw new ArgumentNullException(nameof(showRepository));
+			this.movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
+			this.hallRepository = hallRepository ?? throw new ArgumentNullException(nameof(hallRepository));
+			this.authentication = authentication ?? throw new ArgumentNullException(nameof(authentication));
 		}
 		/// <summary>
 		/// 更新Show

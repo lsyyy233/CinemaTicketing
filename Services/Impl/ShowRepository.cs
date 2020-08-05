@@ -15,7 +15,7 @@ namespace CinemaTicketing.Services.Impl
 		protected readonly CinemaTicketingDbContext _DbContext;
 		public ShowRepository(CinemaTicketingDbContext cinemaTicketingDbContext)
 		{
-			_DbContext = cinemaTicketingDbContext;
+			_DbContext = cinemaTicketingDbContext ?? throw new ArgumentNullException(nameof(cinemaTicketingDbContext));
 		}
 		/// <summary>
 		/// 获取指定日期和影厅的有空闲的场次
@@ -32,7 +32,7 @@ namespace CinemaTicketing.Services.Impl
 				.Where(x => x.DateTime == date && x.HallId == hallId)
 				.Select(x => x.ShowNum)
 				.ToListAsync();
-			
+
 			if (showId != null)
 			{
 				Show show = await _DbContext.Shows
@@ -42,11 +42,10 @@ namespace CinemaTicketing.Services.Impl
 				{
 					lists.Remove(show.ShowNum);
 				}
-				foreach (ShowNum showNum in lists)
-				{
-					availableShows.Remove(showNum.ToString());
-				}
-
+			}
+			foreach (ShowNum showNum in lists)
+			{
+				availableShows.Remove(showNum.ToString());
 			}
 			return availableShows;
 		}

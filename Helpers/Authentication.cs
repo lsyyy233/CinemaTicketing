@@ -14,8 +14,8 @@ namespace CinemaTicketing.Helpers
 
 		public Authentication(ILoggedUserRepository loggedUserRepository, IUserRepository userRepository)
 		{
-			this.loggedUserRepository = loggedUserRepository;
-			this.userRepository = userRepository;
+			this.loggedUserRepository = loggedUserRepository ?? throw new ArgumentNullException(nameof(loggedUserRepository));
+			this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
 		}
 		public async Task<User> GetUserTypeAsync(Guid guid)
 		{

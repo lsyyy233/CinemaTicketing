@@ -13,7 +13,7 @@ namespace CinemaTicketing.Services.Impl
 		protected readonly CinemaTicketingDbContext _DbContext;
 		public UserRepository(CinemaTicketingDbContext cinemaTicketingDbContext)
 		{
-			_DbContext = cinemaTicketingDbContext;
+			_DbContext = cinemaTicketingDbContext ?? throw new ArgumentNullException(nameof(cinemaTicketingDbContext));
 		}
 
 		public void AddUser(User user)
