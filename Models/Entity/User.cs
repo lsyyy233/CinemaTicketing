@@ -1,5 +1,4 @@
-﻿using Masuit.Tools.Security;
-using System;
+﻿using CinemaTicketing.Helpers;
 using System.Collections.Generic;
 
 namespace CinemaTicketing.Models.Entity
@@ -29,7 +28,7 @@ namespace CinemaTicketing.Models.Entity
 			}
 			set
 			{
-				password = value.MDString();
+				password = Utils.GetMD5WithString(value);
 			}
 		}
 		public List<Ticket> Tickets { get; set; }

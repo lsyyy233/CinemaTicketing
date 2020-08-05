@@ -1,9 +1,6 @@
 ﻿using CinemaTicketing.Helpers.Pagination;
 using CinemaTicketing.Models.Entity;
-using Masuit.Tools.Models;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CinemaTicketing.Services

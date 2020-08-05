@@ -1,7 +1,6 @@
 ﻿using CinemaTicketing.Helpers.Pagination;
 using CinemaTicketing.Models;
 using CinemaTicketing.Models.Entity;
-using Masuit.Tools.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

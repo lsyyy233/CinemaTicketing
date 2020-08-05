@@ -1,12 +1,8 @@
 ﻿using CinemaTicketing.Models.Entity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Logging.Debug;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace CinemaTicketing.Models
 {
@@ -304,22 +300,22 @@ namespace CinemaTicketing.Models
 #if DEBUG
 				//将生成的SQL语句打印到控制台
 				.UseLoggerFactory(ConsoleLoggerFactory)
-				.EnableSensitiveDataLogging()
+				.EnableSensitiveDataLogging();
 #endif
-				.UseMySql(GetConnectString());
+				//.UseMySql(GetConnectString());
 		}
 		/// <summary>
 		/// 读取appsetting.json中的链接字符串
 		/// </summary>
 		/// <returns>数据库连接字符串</returns>
-		public static string GetConnectString()
-		{
-			ConfigurationBuilder builder = new ConfigurationBuilder();
-			builder.SetBasePath(System.Environment.CurrentDirectory).AddJsonFile("appsettings.json", optional: false);
-			IConfigurationRoot configuration = builder.Build();
-			string connectionString = configuration.GetConnectionString("BloggingDatabase");
-			return connectionString;
-		}
+		//public static string GetConnectString()
+		//{
+		//	ConfigurationBuilder builder = new ConfigurationBuilder();
+		//	builder.SetBasePath(System.Environment.CurrentDirectory).AddJsonFile("appsettings.json", optional: false);
+		//	IConfigurationRoot configuration = builder.Build();
+		//	string connectionString = configuration.GetConnectionString("BloggingDatabase");
+		//	return connectionString;
+		//}
 		public static readonly ILoggerFactory ConsoleLoggerFactory = LoggerFactory.Create(builder =>
 		{
 			builder.AddFilter((category, level) =>

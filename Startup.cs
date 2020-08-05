@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,7 +40,7 @@ namespace CinemaTicketing
 				setup.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
 			})
 			.AddXmlDataContractSerializerFormatters();
-			//识别application/vnd.company.hateoas+json Accept请求头
+			//识别application/vnd.cinemaTicketing.hateoas+json Accept请求头
 			services.Configure<MvcOptions>(config =>
 			{
 				NewtonsoftJsonOutputFormatter newtonsoftJsonOutputFormatter = config.OutputFormatters.OfType<NewtonsoftJsonOutputFormatter>()?.FirstOrDefault();
@@ -54,9 +55,10 @@ namespace CinemaTicketing
 				.AddScoped<ITicketRepository, TicketRepository>()
 				.AddScoped<IUserRepository, UserRepository>()
 				.AddScoped<IShowRepository, ShowRepository>()
-				.AddScoped<ILoggedUserRepository,LoggedUserRepository>()
-				.AddScoped<IAuthentication,Authentication>();
-			services.AddDbContext<CinemaTicketingDbContext>();
+				.AddScoped<ILoggedUserRepository, LoggedUserRepository>()
+				.AddScoped<IAuthentication, Authentication>();
+			services.AddDbContext<CinemaTicketingDbContext>(options =>
+				options.UseMySql(Configuration.GetConnectionString("BloggingDatabase")));
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 		}
 
