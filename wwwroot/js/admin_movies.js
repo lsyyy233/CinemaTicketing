@@ -103,12 +103,12 @@ function getLinksForMoviePage(result) {
 
 		// console.log("link = " + JSON.stringify(link));
 		if (link["rel"] == "next_page") {
-			document.getElementById("Next").disabled = false;
+			document.getElementById("movieNext").disabled = false;
 			movieNextPageUrl = link["href"];
 			// console.log("nextUrl = " + nextPageUrl);
 		}
 		if (link["rel"] == "previous_page") {
-			document.getElementById("Previous").disabled = false;
+			document.getElementById("moviePrevious").disabled = false;
 			moviePreviousUrl = link["href"];
 			// console.log("previousUrl = " + previousPageUrl);
 		}

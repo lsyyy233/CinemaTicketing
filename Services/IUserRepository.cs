@@ -16,6 +16,8 @@ namespace CinemaTicketing.Services
 		Task<bool> SaveAsync();
 		public Task<User> GetUserAsync(int userId);
 
-		public Task<User> UserExists(User user);
+		public Task<User> UserExistsAsync(User user);
+		void AddUser(User user);
+		Task<bool> UserNameExistsAsync(string userName);
 	}
 }

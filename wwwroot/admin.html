@@ -11,6 +11,7 @@
 		<script type="text/javascript" src="js/admin_movies.js"></script>
 		<script type="text/javascript" src="js/admin_halls.js"></script>
 		<script type="text/javascript" src="js/admin_shows.js"></script>
+		<script type="text/javascript" src="js/admin_tickets.js"></script>
 	</head>
 	<body>
 		<div class="container">
@@ -53,6 +54,15 @@
 					<span id = "showPageInfo"style="display:-moz-inline-box; display:inline-block; width: 15.625rem; text-align: center;"></span>
 					<button class="btn btn-primary" onclick=javascript:showNextPage() style="width: 100px;" id="showNext" disabled="disabled">下一页</button>
 					<button class="btn btn-primary" onclick=javascript:jumpToAddShow() style="width: 70px; float: right;">添加</button>
+				</div>
+				<div class="col-md-20 offset-md-1">
+					<span class=" h3">已售出的电影票</span>
+					<table class="table" id="ticketTable"  style="text-align: center; width: 969px;">
+						
+					</table>
+					<button class="btn btn-primary" onclick=javascript:ticketPreviousPage() style="width: 100px;" id="ticketPrevious" disabled="disabled">上一页</button>
+					<span id = "ticketPageInfo"style="display:-moz-inline-box; display:inline-block; width: 15.625rem; text-align: center;"></span>
+					<button class="btn btn-primary" onclick=javascript:ticketNextPage() style="width: 100px;" id="ticketNext" disabled="disabled">下一页</button>
 				</div>
 			</div>
 		</div>

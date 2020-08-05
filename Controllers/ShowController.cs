@@ -64,11 +64,11 @@ namespace CinemaTicketing.Controllers
 			{
 				return NotFound();
 			}
-			showRepository.DeleteShow(show);
-			await showRepository.SaveAsync();
+			//showRepository.DeleteShow(show);
+			//await showRepository.SaveAsync();
 
 			mapper.Map(showUpdateDto, show);
-			showRepository.AddShow(show);
+			showRepository.UpdateShow(show);
 			await showRepository.SaveAsync();
 			return NoContent();
 		}

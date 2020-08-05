@@ -25,7 +25,34 @@ namespace CinemaTicketing.Controllers
 			this.userRepository = userRepository;
 			this.mapper = mapper;
 		}
-		
+		[HttpGet(Name =nameof(GetUserById))]
+		public async Task<ActionResult> GetUserById(int userId)
+		{
+			User user =  await userRepository.GetUserAsync(userId);
+			UserDto userDto = mapper.Map<UserDto>(user);
+			return Ok(userDto);
+		}
+		/// <summary>
+		/// 用户注册
+		/// </summary>
+		/// <param name="userAddDto"></param>
+		/// <returns></returns>
+		[HttpPost(Name =nameof(UserRegister))]
+		public async Task<ActionResult> UserRegister([FromBody]UserAddDto userAddDto)
+		{
+			if (await userRepository.UserNameExistsAsync(userAddDto.UserName))
+			{
+				return Conflict();
+			}
+			User user = mapper.Map<User>(userAddDto);
+			userRepository.AddUser(user);
+			await userRepository.SaveAsync();
+			UserDto userDto = mapper.Map<UserDto>(user);
+			return CreatedAtRoute(
+				nameof(GetUserById),
+				user.Id,
+				userDto);
+		}
 		/// <summary>
 		/// 用户登录
 		/// </summary>
@@ -39,7 +66,7 @@ namespace CinemaTicketing.Controllers
 			UserDto userDto;
 			User user = mapper.Map<User>(userLoginDto);
 			//检查用户是否存在
-			User existsUser = await userRepository.UserExists(user);
+			User existsUser = await userRepository.UserExistsAsync(user);
 			if (existsUser == null)
 			{
 				//不存在该用户，返回422

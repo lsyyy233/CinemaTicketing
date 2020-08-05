@@ -52,9 +52,10 @@ namespace CinemaTicketing.Controllers
 		/// <returns></returns>
 		[HttpGet("{guid}", Name = nameof(GetTicketsAsync))]
 		public async Task<ActionResult> GetTicketsAsync(
-			Guid guid,
+
 			[FromQuery] PagedParametersBase pagedParameters,
-			[FromHeader(Name = "Accept")] string mediaType)
+			[FromHeader(Name = "Accept")] string mediaType,
+			Guid guid)
 		{
 			User user = await authentication.GetUserTypeAsync(guid);
 			if (user == null)
@@ -98,12 +99,12 @@ namespace CinemaTicketing.Controllers
 				List<dynamic> linkedTicketDtos = new List<dynamic>();
 				foreach (TicketDto data in pagedTicketDtos)
 				{
-					IEnumerable<LinkDto> linksForTicket = CreateLinksForHall(data.Id);
+					IEnumerable<LinkDto> linksForTicket = CreateLinksForTicket(data.Id);
 					linkedTicketDtos.Add(new { data, linksForTicket });
 				}
 				//添加翻页信息
-				IEnumerable<LinkDto> linksForShows = CreateLinksForHalls(pagedParameters, pagedickets.HasPrevious, pagedickets.HasNext, user.UserType, guid);
-				var result = new { linkedTicketDtos, linksForShows, pagedickets.TotalCount, pagedickets.CurrentPage, pagedickets.TotalPages };
+				IEnumerable<LinkDto> pageLink = CreateLinksForHalls(pagedParameters, pagedickets.HasPrevious, pagedickets.HasNext, user.UserType);
+				var result = new { linkedTicketDtos, pageLink, pagedickets.TotalCount, pagedickets.CurrentPage, pagedickets.TotalPages };
 				return Ok(result);
 			}
 			return Ok(pagedTicketDtos);
@@ -228,12 +229,12 @@ namespace CinemaTicketing.Controllers
 		/// </summary>
 		/// <param name="showId"></param>
 		/// <returns></returns>
-		private IEnumerable<LinkDto> CreateLinksForHall(int showId)
+		private IEnumerable<LinkDto> CreateLinksForTicket(int ticketId)
 		{
 			List<LinkDto> links = new List<LinkDto>
 			{
 				new LinkDto(
-					Url.Link(nameof(DeleteTicket), new { showId }),
+					Url.Link(nameof(DeleteTicket), new { ticketId }),
 					"delete ticket",
 					"Delete")
 			};
@@ -246,23 +247,23 @@ namespace CinemaTicketing.Controllers
 		/// <param name="hasPrevious"></param>
 		/// <param name="hasNext"></param>
 		/// <returns></returns>
-		private IEnumerable<LinkDto> CreateLinksForHalls(PagedParametersBase parameters, bool hasPrevious, bool hasNext, UserType userType, Guid guid)
+		private IEnumerable<LinkDto> CreateLinksForHalls(PagedParametersBase parameters, bool hasPrevious, bool hasNext, UserType userType)
 		{
 			List<LinkDto> links = new List<LinkDto>
 			{
-				new LinkDto(CreateHallsResourceUri(parameters, ResourceUriType.CurrentPage, userType, guid),
+				new LinkDto(CreateHallsResourceUri(parameters, ResourceUriType.CurrentPage, userType),
 				"self",
 				"Get")
 			};
 			if (hasPrevious)
 			{
-				links.Add(new LinkDto(CreateHallsResourceUri(parameters, ResourceUriType.PreviousPage, userType, guid),
+				links.Add(new LinkDto(CreateHallsResourceUri(parameters, ResourceUriType.PreviousPage, userType),
 					"previous_page",
 					"Get"));
 			}
 			if (hasNext)
 			{
-				links.Add(new LinkDto(CreateHallsResourceUri(parameters, ResourceUriType.NextPage, userType, guid),
+				links.Add(new LinkDto(CreateHallsResourceUri(parameters, ResourceUriType.NextPage, userType),
 					"next_page",
 					"Get"));
 			}
@@ -274,7 +275,7 @@ namespace CinemaTicketing.Controllers
 		/// <param name="parameters"></param>
 		/// <param name="resourceUriType"></param>
 		/// <returns></returns>
-		private string CreateHallsResourceUri(PagedParametersBase parameters, ResourceUriType resourceUriType, UserType userType, Guid guid)
+		private string CreateHallsResourceUri(PagedParametersBase parameters, ResourceUriType resourceUriType, UserType userType)
 		{
 			int pageNumber = 0;
 			switch (resourceUriType)
@@ -298,7 +299,6 @@ namespace CinemaTicketing.Controllers
 
 			return Url.Link(nameof(GetTicketsAsync), new
 			{
-				guid,
 				pageNumber,
 				pageSize = parameters.PageSize
 			});

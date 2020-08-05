@@ -28,9 +28,9 @@ namespace CinemaTicketing.Models
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
-			modelBuilder.Entity<Show>()
-				.HasIndex(x => x.Id)
-				.IsUnique();
+			//modelBuilder.Entity<Show>()
+			//	.HasIndex(x => x.Id)
+			//	.IsUnique();
 
 			#region 对应关系
 			//Ticket和Show的对应关系
@@ -77,12 +77,12 @@ namespace CinemaTicketing.Models
 				.HasKey(x => x.UserId);
 			#endregion
 			#region 唯一约束
-			//场次 日期、影厅和第*场的联合唯一约束
-			modelBuilder.Entity<Show>()
-				.HasAlternateKey(x => new { x.ShowNum,x.HallId, x.DateTime });
-			//电影票 场次和座位号唯一约束
-			modelBuilder.Entity<Ticket>()
-				.HasAlternateKey(x => new { x.ShowId, x.SeatNum });
+			////场次 日期、影厅和第*场的联合唯一约束
+			//modelBuilder.Entity<Show>()
+			//	.HasAlternateKey(x => new { x.ShowNum,x.HallId, x.DateTime });
+			////电影票 场次和座位号唯一约束
+			//modelBuilder.Entity<Ticket>()
+			//	.HasAlternateKey(x => new { x.ShowId, x.SeatNum });
 			#endregion
 			#region 种子数据
 			modelBuilder.Entity<Movie>()

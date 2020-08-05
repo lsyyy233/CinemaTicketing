@@ -3,10 +3,14 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CinemaTicketing.Migrations
 {
-    public partial class UpdateShowEntityAlternateKey : Migration
+    public partial class removeAlternateKey : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropUniqueConstraint(
+                name: "AK_Tickets_ShowId_SeatNum",
+                table: "Tickets");
+
             migrationBuilder.DropUniqueConstraint(
                 name: "AK_Shows_ShowNum_DateTime",
                 table: "Shows");
@@ -15,11 +19,6 @@ namespace CinemaTicketing.Migrations
                 table: "Shows",
                 keyColumn: "Id",
                 keyValue: 1);
-
-            migrationBuilder.AddUniqueConstraint(
-                name: "AK_Shows_ShowNum_HallId_DateTime",
-                table: "Shows",
-                columns: new[] { "ShowNum", "HallId", "DateTime" });
 
             migrationBuilder.InsertData(
                 table: "Halls",
@@ -45,6 +44,11 @@ namespace CinemaTicketing.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Password", "UserName", "UserType" },
+                values: new object[] { 3, "55587a910882016321201e6ebbc9f595", "李四", 1 });
+
+            migrationBuilder.InsertData(
                 table: "Shows",
                 columns: new[] { "Id", "DateTime", "HallId", "MovieId", "Price", "ShowNum" },
                 values: new object[] { 3, new DateTime(2020, 8, 10, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 3, 123.40000000000001, 3 });
@@ -53,13 +57,18 @@ namespace CinemaTicketing.Migrations
                 table: "Shows",
                 columns: new[] { "Id", "DateTime", "HallId", "MovieId", "Price", "ShowNum" },
                 values: new object[] { 4, new DateTime(2020, 8, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), 2, 3, 123.40000000000001, 1 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Tickets_ShowId",
+                table: "Tickets",
+                column: "ShowId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropUniqueConstraint(
-                name: "AK_Shows_ShowNum_HallId_DateTime",
-                table: "Shows");
+            migrationBuilder.DropIndex(
+                name: "IX_Tickets_ShowId",
+                table: "Tickets");
 
             migrationBuilder.DeleteData(
                 table: "Shows",
@@ -127,9 +136,19 @@ namespace CinemaTicketing.Migrations
                 keyValue: 13);
 
             migrationBuilder.DeleteData(
+                table: "Users",
+                keyColumn: "Id",
+                keyValue: 3);
+
+            migrationBuilder.DeleteData(
                 table: "Halls",
                 keyColumn: "Id",
                 keyValue: 2);
+
+            migrationBuilder.AddUniqueConstraint(
+                name: "AK_Tickets_ShowId_SeatNum",
+                table: "Tickets",
+                columns: new[] { "ShowId", "SeatNum" });
 
             migrationBuilder.AddUniqueConstraint(
                 name: "AK_Shows_ShowNum_DateTime",

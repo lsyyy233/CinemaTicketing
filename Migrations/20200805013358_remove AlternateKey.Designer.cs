@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketing.Migrations
 {
     [DbContext(typeof(CinemaTicketingDbContext))]
-    [Migration("20200803095343_Update Show Entity AlternateKey")]
-    partial class UpdateShowEntityAlternateKey
+    [Migration("20200805013358_remove AlternateKey")]
+    partial class removeAlternateKey
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -122,7 +122,7 @@ namespace CinemaTicketing.Migrations
 
             modelBuilder.Entity("CinemaTicketing.Models.Entity.Show", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -142,8 +142,6 @@ namespace CinemaTicketing.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasAlternateKey("ShowNum", "HallId", "DateTime");
 
                     b.HasIndex("HallId");
 
@@ -288,7 +286,7 @@ namespace CinemaTicketing.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("ShowId", "SeatNum");
+                    b.HasIndex("ShowId");
 
                     b.HasIndex("UserId");
 
@@ -327,6 +325,13 @@ namespace CinemaTicketing.Migrations
                             Id = 2,
                             Password = "55587a910882016321201e6ebbc9f595",
                             UserName = "张三",
+                            UserType = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Password = "55587a910882016321201e6ebbc9f595",
+                            UserName = "李四",
                             UserType = 1
                         });
                 });

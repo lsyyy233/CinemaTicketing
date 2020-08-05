@@ -14,6 +14,7 @@ namespace CinemaTicketing.Models.Profiles
 		{
 			CreateMap<User, UserDto>();
 			CreateMap<UserLoginDto, User>();
+			CreateMap<UserAddDto, User>();
 		}
 	}
 }

@@ -5,13 +5,18 @@ function login(){
 }
 function sendRequest(username,password){
 	console.clear();
-	var data = "{\"userName\":\"" + username + "\",\"password\":\"" + password + "\"}";
+	var data = {
+		"userName":username,
+		"password":password
+	}
+	var dataJson = JSON.stringify(data);
+	// var data = "{\"userName\":\"" + username + "\",\"password\":\"" + password + "\"}";
 	// console.log(data);
 	$.ajax({
 		type: "POST",
 		url: "api/users/login",
 		contentType: "application/json;charset=utf-8",
-		data: data,
+		data: dataJson,
 		dataType: "json",
 		success: function (data,textStatus) {
 			// alert("提交成功" + JSON.stringify(message));
