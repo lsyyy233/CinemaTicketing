@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CinemaTicketing.Helpers;
 using CinemaTicketing.Helpers.Pagination;
 using CinemaTicketing.Models.Dtos;
 using CinemaTicketing.Models.Dtos.AddDtos;
@@ -35,14 +34,14 @@ namespace CinemaTicketing.Controllers
 			IMovieRepository movieRepository,
 			IAuthentication authentication)
 		{
-			this.ticketRepository = ticketRepository ?? throw new ArgumentNullException(nameof(ticketRepository));
-			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-			this.showRepository = showRepository ?? throw new ArgumentNullException(nameof(showRepository));
-			this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-			this.loggedUserRepository = loggedUserRepository ?? throw new ArgumentNullException(nameof(loggedUserRepository));
-			this.hallRepository = hallRepository ?? throw new ArgumentNullException(nameof(hallRepository));
-			this.movieRepository = movieRepository ?? throw new ArgumentNullException(nameof(movieRepository));
-			this.authentication = authentication ?? throw new ArgumentNullException(nameof(authentication));
+			this.ticketRepository = ticketRepository;
+			this.mapper = mapper;
+			this.showRepository = showRepository;
+			this.userRepository = userRepository;
+			this.loggedUserRepository = loggedUserRepository;
+			this.hallRepository = hallRepository;
+			this.movieRepository = movieRepository;
+			this.authentication = authentication;
 		}
 
 		/// <summary>

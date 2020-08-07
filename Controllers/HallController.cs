@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CinemaTicketing.Helpers;
 using CinemaTicketing.Helpers.Pagination;
 using CinemaTicketing.Models.Dtos;
 using CinemaTicketing.Models.Dtos.AddDtos;
@@ -26,9 +25,9 @@ namespace CinemaTicketing.Controllers
 			IHallRepository hallRepository, 
 			IAuthentication authentication)
 		{
-			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
-			this.hallRepository = hallRepository ?? throw new ArgumentNullException(nameof(hallRepository));
-			this.authentication = authentication ?? throw new ArgumentNullException(nameof(authentication));
+			this.mapper = mapper;
+			this.hallRepository = hallRepository;
+			this.authentication = authentication;
 		}
 		
 		/// <summary>

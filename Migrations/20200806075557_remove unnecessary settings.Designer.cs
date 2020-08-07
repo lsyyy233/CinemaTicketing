@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CinemaTicketing.Migrations
 {
     [DbContext(typeof(CinemaTicketingDbContext))]
-    [Migration("20200730083201_Add LoggedUser Entity")]
-    partial class AddLoggedUserEntity
+    [Migration("20200806075557_remove unnecessary settings")]
+    partial class removeunnecessarysettings
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,14 +34,6 @@ namespace CinemaTicketing.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Halls");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "一号厅",
-                            Seats = 56
-                        });
                 });
 
             modelBuilder.Entity("CinemaTicketing.Models.Entity.LoggedUser", b =>
@@ -66,7 +58,7 @@ namespace CinemaTicketing.Migrations
                     b.Property<string>("Introduction")
                         .HasColumnType("longtext CHARACTER SET utf8mb4");
 
-                    b.Property<bool>("IsReleased")
+                    b.Property<bool>("IsUnderTheHit")
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("Name")
@@ -75,41 +67,11 @@ namespace CinemaTicketing.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Movies");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Introduction = "李维杰（肖央 饰）与妻子阿玉（谭卓 饰）打拼多年，膝下育有两个女儿。一个雨夜，一场意外，打破了这个家庭的宁静。而李维杰作为一个父亲，为了保全自己的家人，他不顾一切地决定瞒天过海……",
-                            IsReleased = true,
-                            Name = "误杀"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Introduction = "热爱音乐的米格尔（安东尼·冈萨雷兹 Anthony Gonzalez 配音）不幸地出生在一个视音乐为洪水猛兽的大家庭之中，一家人只盼着米格尔快快长大，好继承家里传承了数代的制鞋产业。一年一度的亡灵节即将来临，每逢这一天，去世的亲人们的魂魄便可凭借着摆在祭坛上的照片返回现世和生者团圆。 在一场意外中，米格尔竟然穿越到了亡灵国度之中，在太阳升起之前，他必须得到一位亲人的祝福，否则就将会永远地留在这个世界里。米格尔决定去寻找已故的歌神德拉库斯（本杰明·布拉特 Benjamin Bratt 配音），因为他很有可能就是自己的祖父。途中，米格尔邂逅了落魄乐手埃克托（盖尔·加西亚·贝纳尔 Gael García Bernal 配音），也渐渐发现了德拉库斯隐藏已久的秘密。",
-                            IsReleased = true,
-                            Name = "寻梦环游记"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Introduction = "维多利亚女王时代著名的医生兼兽医，异于常人的约翰·多力特医生在痛失爱妻七年之后，隐居在多力特庄园的高墙内，只与自己饲养的珍稀动物为伴。谁知年轻的女王（杰西·巴克利 饰）罹患重病，多力特只得启航，踏上一段恢宏旅程，前往一座神秘的岛屿寻找治病良方。沿途历经重遇宿敌，发现神奇生物，他也重拾起了智慧和勇气。 与多力特一起踏上旅程的，还有一位年轻的、自封的学徒（哈里·科莱特 饰）和一群七嘴八舌的动物朋友，其中有一只焦虑的大猩猩（拉米·马雷克 配音）、一只热情但呆头呆脑的鸭子（奥克塔维亚·斯宾瑟 配音）、终日斗嘴的一只愤世嫉俗的鸵鸟（库梅尔·南贾尼 配音）和一头欢乐的北极熊（约翰·塞纳 配音），以及一只顽固的鹦鹉（艾玛·汤普森 配音），它同时也是多力特最信任的顾问和知己。",
-                            IsReleased = true,
-                            Name = "多力特的奇幻冒险"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Introduction = "电影根据勇士漫画改编，讲述由范·迪塞尔扮演的士兵雷·加里森在战斗中意外阵亡，被RST公司利用尖端纳米技术起死回生，变身即时自愈、媲美超级电脑的超级英雄——喋血战士。苏醒的他执着于脑海中残存的记忆碎片，踏上为爱妻的复仇之路，却发现自己竟无法分清真实与虚幻...",
-                            IsReleased = true,
-                            Name = "喋血战士"
-                        });
                 });
 
             modelBuilder.Entity("CinemaTicketing.Models.Entity.Show", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -130,24 +92,11 @@ namespace CinemaTicketing.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("ShowNum", "DateTime");
-
                     b.HasIndex("HallId");
 
                     b.HasIndex("MovieId");
 
                     b.ToTable("Shows");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DateTime = new DateTime(2020, 7, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            HallId = 1,
-                            MovieId = 1,
-                            Price = 123.40000000000001,
-                            ShowNum = 1
-                        });
                 });
 
             modelBuilder.Entity("CinemaTicketing.Models.Entity.Ticket", b =>
@@ -167,7 +116,7 @@ namespace CinemaTicketing.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasAlternateKey("ShowId", "SeatNum");
+                    b.HasIndex("ShowId");
 
                     b.HasIndex("UserId");
 
@@ -192,22 +141,6 @@ namespace CinemaTicketing.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Password = "e10adc3949ba59abbe56e057f20f883e",
-                            UserName = "admin",
-                            UserType = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Password = "55587a910882016321201e6ebbc9f595",
-                            UserName = "张三",
-                            UserType = 1
-                        });
                 });
 
             modelBuilder.Entity("CinemaTicketing.Models.Entity.LoggedUser", b =>

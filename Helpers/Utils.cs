@@ -5,7 +5,7 @@ namespace CinemaTicketing.Helpers
 {
 	public static class Utils
 	{
-		public static string GetMD5WithString(string str)
+		public static string GetMD5WithString(this string str)
 		{
 			StringBuilder md5Str = new StringBuilder();
 			byte[] data = Encoding.GetEncoding("utf-8").GetBytes(str);

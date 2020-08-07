@@ -48,7 +48,7 @@ function getTicketPageLink(result) {
 	}
 }
 
-function deleteTicket(url){
+function deleteTicket(url) {
 	// console.log(url);
 	$.ajax({
 		beforeSend: function(request) {
@@ -61,6 +61,9 @@ function deleteTicket(url){
 		success: function(result) { //请求成功后的回调函数，data为后台返回的值
 			// alert("退票成功");
 			getTicketList(ticketSelfPageUrl);
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			console.log(XMLHttpRequest.status);
 		}
 	});
 }
@@ -105,10 +108,10 @@ function showTicket(result) {
 	document.getElementById("ticketTable").innerHTML = str;
 }
 
-function ticketNextPage(){
+function ticketNextPage() {
 	getTicketList(ticketNextPageUrl);
 }
 
-function ticketPreviousPage(){
+function ticketPreviousPage() {
 	getTicketList(ticketPreviousPageUrl);
 }

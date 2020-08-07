@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CinemaTicketing.Helpers;
 using CinemaTicketing.Models.Dtos;
 using CinemaTicketing.Models.Entity;
 using CinemaTicketing.Services;
@@ -21,14 +20,14 @@ namespace CinemaTicketing.Controllers
 			IUserRepository userRepository,
 			IMapper mapper)
 		{
-			this.loggedUserRepository = loggedUserRepository ?? throw new ArgumentNullException(nameof(loggedUserRepository));
-			this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			this.loggedUserRepository = loggedUserRepository;
+			this.userRepository = userRepository;
+			this.mapper = mapper;
 		}
-		[HttpGet(Name =nameof(GetUserById))]
+		[HttpGet(Name = nameof(GetUserById))]
 		public async Task<ActionResult> GetUserById(int userId)
 		{
-			User user =  await userRepository.GetUserAsync(userId);
+			User user = await userRepository.GetUserAsync(userId);
 			UserDto userDto = mapper.Map<UserDto>(user);
 			return Ok(userDto);
 		}
@@ -37,8 +36,20 @@ namespace CinemaTicketing.Controllers
 		/// </summary>
 		/// <param name="userAddDto"></param>
 		/// <returns></returns>
-		[HttpPost(Name =nameof(UserRegister))]
-		public async Task<ActionResult> UserRegister([FromBody]UserAddDto userAddDto)
+		[HttpPost(Name = nameof(UserRegister))]
+		public async Task<ActionResult> UserRegister(
+			[FromBody]
+		//	[Bind("UserName,Password")]
+		//	User user)
+		//{
+		//	Console.WriteLine(ModelState.IsValid);
+		//	if (await userRepository.UserNameExistsAsync(user.UserName))
+		//	{
+		//		return Conflict();
+		//	}
+		//	User user = mapper.Map<User>(userAddDto);
+
+			UserAddDto userAddDto)
 		{
 			if (await userRepository.UserNameExistsAsync(userAddDto.UserName))
 			{
@@ -59,9 +70,10 @@ namespace CinemaTicketing.Controllers
 		/// <param name="userLoginDto"></param>
 		/// <returns>如果登陆成功，返回LoggedUserDto对象</returns>
 		[HttpPost("login/", Name = nameof(LoginIn))]
-		public async Task<ActionResult<LoggedUserDto>> LoginIn([FromBody] UserLoginDto userLoginDto, [FromHeader(Name = "Guid")] string text)
+		public async Task<ActionResult<LoggedUserDto>> LoginIn(
+					[FromBody]
+			UserLoginDto userLoginDto)
 		{
-			Console.WriteLine(text);
 			LoggedUserDto loggedUserDto;
 			UserDto userDto;
 			User user = mapper.Map<User>(userLoginDto);
@@ -119,6 +131,5 @@ namespace CinemaTicketing.Controllers
 			loggedUserDto.UserDto = userDto;
 			return Ok(loggedUserDto);
 		}
-
 	}
 }

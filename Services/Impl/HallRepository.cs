@@ -52,7 +52,7 @@ namespace CinemaTicketing.Services.Impl
 			{
 				hall.Id = _DbContext.Halls.Select(x => x.Id).Max() + 1;
 			}
-			catch (System.InvalidOperationException)
+			catch (InvalidOperationException)
 			{
 				hall.Id = 1;
 			}

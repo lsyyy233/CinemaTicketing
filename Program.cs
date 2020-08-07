@@ -25,6 +25,7 @@ namespace CinemaTicketing
 					CinemaTicketingDbContext dbContext = scope.ServiceProvider.GetService<CinemaTicketingDbContext>();
 					dbContext.Database.EnsureDeleted();
 					dbContext.Database.EnsureCreated();
+					SeedData.Initialize(dbContext);
 				}
 				catch (Exception e)
 				{

@@ -1,11 +1,11 @@
 using AutoMapper;
-using CinemaTicketing.Helpers;
 using CinemaTicketing.Models;
 using CinemaTicketing.Services;
 using CinemaTicketing.Services.Impl;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.EntityFrameworkCore;
@@ -60,11 +60,18 @@ namespace CinemaTicketing
 			services.AddDbContext<CinemaTicketingDbContext>(options =>
 				options.UseMySql(Configuration.GetConnectionString("BloggingDatabase")));
 			services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+			services.AddSwaggerDocument();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
 		{
+			app.UseForwardedHeaders(new ForwardedHeadersOptions
+			{
+				ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto
+			});
+
+			app.UseAuthentication();
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
@@ -80,8 +87,12 @@ namespace CinemaTicketing
 					});
 				});
 			}
-
+			app.UseDefaultFiles();
 			app.UseStaticFiles();
+
+			app.UseOpenApi();
+			app.UseSwaggerUi3();
+
 			app.UseHttpsRedirection();
 			app.UseRouting();
 			app.UseAuthorization();

@@ -18,14 +18,15 @@ namespace CinemaTicketing.Services.Impl
 
 		public void AddUser(User user)
 		{
-			try
-			{
-				user.Id = _DbContext.Users.Select(x => x.Id).Max() + 1;
-			}
-			catch (System.InvalidOperationException)
-			{
-				user.Id = 1;
-			}
+			//try
+			//{
+			//	user.Id = _DbContext.Users.Select(x => x.Id).Max() + 1;
+			//}
+			//catch (System.InvalidOperationException)
+			//{
+			//	user.Id = 1;
+			//}
+
 			_DbContext.Users.Add(user);
 		}
 
