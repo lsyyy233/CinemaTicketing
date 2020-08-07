@@ -1,11 +1,9 @@
 ﻿using CinemaTicketing.Models.Entity;
 using CinemaTicketing.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace CinemaTicketing.Helpers
+namespace CinemaTicketing.Services.Impl
 {
 	public class Authentication : IAuthentication
 	{

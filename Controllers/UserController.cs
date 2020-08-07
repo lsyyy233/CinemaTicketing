@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using CinemaTicketing.Helpers;
 using CinemaTicketing.Models.Dtos;
 using CinemaTicketing.Models.Entity;
 using CinemaTicketing.Services;
@@ -21,9 +20,9 @@ namespace CinemaTicketing.Controllers
 			IUserRepository userRepository,
 			IMapper mapper)
 		{
-			this.loggedUserRepository = loggedUserRepository ?? throw new ArgumentNullException(nameof(loggedUserRepository));
-			this.userRepository = userRepository ?? throw new ArgumentNullException(nameof(userRepository));
-			this.mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+			this.loggedUserRepository = loggedUserRepository;
+			this.userRepository = userRepository;
+			this.mapper = mapper;
 		}
 		[HttpGet(Name =nameof(GetUserById))]
 		public async Task<ActionResult> GetUserById(int userId)
@@ -119,6 +118,5 @@ namespace CinemaTicketing.Controllers
 			loggedUserDto.UserDto = userDto;
 			return Ok(loggedUserDto);
 		}
-
 	}
 }

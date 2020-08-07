@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace CinemaTicketing.Helpers
+namespace CinemaTicketing.Services
 {
 	public interface IAuthentication
 	{
