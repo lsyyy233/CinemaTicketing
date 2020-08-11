@@ -9,7 +9,7 @@ https://go.microsoft.com/fwlink/?LinkID=208121.
   </PropertyGroup>
   <ItemGroup>
     <DestinationConnectionStrings Include="BloggingDatabase">
-      <Value>server=127.0.0.1%3bport=3306%3buser=lsyyy%3bpassword=24698%3bdatabase=CinemaTicketing%3b</Value>
+      <Value>server=api.lsyyy.xyz%3bport=3306%3buser=lsyyy%3bpassword=24698%3bdatabase=CinemaTicketing%3b</Value>
     </DestinationConnectionStrings>
   </ItemGroup>
 </Project>
